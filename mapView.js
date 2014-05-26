@@ -27,11 +27,12 @@ function MapView() {
 	        case Phaser.Keyboard.RIGHT:
 	            break;
 	         case Phaser.Keyboard.UP:
+	         	game.state.start(states.dialogue,false);
 	            break;
 	        case Phaser.Keyboard.DOWN:
+	        	game.state.start(states.job);
 	            break;
 	        default:
-				game.state.start(states.job);
 				break;
         }
 	}
