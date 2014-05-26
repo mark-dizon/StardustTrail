@@ -1,18 +1,19 @@
 var screenWidth = 1080;
 var screenHeight = 720;
-var textContent = [" ",
-    "photon storm presents",
-    "a phaser production",
-    " ",
-    "Kern of Duty",
-    " ",
-    "directed by rich davey",
-    "rendering by mat groves",
-    "    ",
-    "03:45, November 4th, 2014",
-    "somewhere in the north pacific",
-    "mission control bravo ...",
-    ];
+var textContent = {
+    "mainText":"This is an example dialogue statement",
+    "choices" :[{
+    	"id" : 1,
+    	"textLine" : "this is a text choice"
+    },{
+    	"id" : 2,
+    	"textLine" : "this is a second text choice"
+    }
+    ]
+}
+
+    
+    
 
 window.onload = function() {
 	//Setup Phaser

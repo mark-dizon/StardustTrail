@@ -1,5 +1,5 @@
 
-function dialogueView(content) {
+function dialogueView(contentObject) {
 	var graphics;
 	var state = new Phaser.State();
 	state.preload = preload;
@@ -7,8 +7,9 @@ function dialogueView(content) {
 	state.update = update;
 	state.handleInput = handleInput;
 	var text;
-	var index = 0;
+	var choiceText;
 	var line = '';
+	
 
 
 	function preload(){
@@ -17,8 +18,8 @@ function dialogueView(content) {
 
 	function create(){
 		graphics = state.add.graphics(0,0);
-		text = game.add.text(32, 380, '', { font: "30pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
-   		nextLine();
+		text = game.add.text(32, 380, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
+   		parseTextObject(contentObject);
 	}
 
 	function update(){
@@ -28,33 +29,30 @@ function dialogueView(content) {
 		game.state.start(states.map);
 	}
 
-	function updateLine() {
 
-    if (line.length < content[index].length)
-    {
-        line = content[index].substr(0, line.length + 1);
-        // text.text = line;
-        text.setText(line);
-    }
-    else
-    {
-        //  Wait 2 seconds then start a new line
-        game.time.events.add(Phaser.Timer.SECOND * 1, nextLine, this);
-    }
-
+	function drawMainText(mainText){
+		 text.setText(mainText);
 	}
 
-	function nextLine() {
-
-    index++;
-
-    if (index < content.length)
-    {
-        line = '';
-        game.time.events.repeat(80, content[index].length + 1, updateLine, this);
-    }
-
+	function drawChoice(textLine, offset){
+		text = game.add.text(32, offset, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
+		text.setText(textLine);
 	}
+	
+
+	function parseTextObject(contentObject){
+		var mainText = contentObject.mainText;
+		drawMainText(mainText);
+		var choiceOffset = 420;
+
+		for (var i in contentObject.choices){
+			var choice = contentObject.choices[i].textLine;
+   			drawChoice(choice,choiceOffset);
+   			choiceOffset+= 20
+		} 
+	}
+
+	
 
 	return state;
 }
