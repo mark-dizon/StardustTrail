@@ -19,7 +19,7 @@ function EventView() {
 	}
 
 	function handleInput(event) {
-		game.state.start(states.map);
+		game.popState();
 	}
 
 	function drawSomething() {
