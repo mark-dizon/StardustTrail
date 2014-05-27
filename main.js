@@ -17,8 +17,7 @@ var textContent = {
 
 window.onload = function() {
 	//Setup Phaser
-    game = new Phaser.Game(screenWidth, screenHeight,
-                             Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    game = new StardustTrailGame(screenWidth, screenHeight, { preload: preload, create: create, update: update });
 }
 
 

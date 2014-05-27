@@ -2,11 +2,13 @@
 
 function JobView() {
 	var graphics;
+	var color;
 
 	var state = new Phaser.State();
 	state.preload = preload;
 	state.create = create;
 	state.update = update;
+	state.init = initJob;
 	state.handleInput = handleInput;
 
 	function preload(){
@@ -15,19 +17,20 @@ function JobView() {
 
 	function create(){
 		graphics = state.add.graphics(0,0);
-		showJobView(0x111300);
+		graphics.beginFill(color);
+		graphics.drawPolygon( makeSquare({x: 0, y: 0}, 500) );
+
 	}
 	
 	function update(){
 	}
 
 	function handleInput(event) {
-		game.state.start(states.map);
+		game.changeState(states.map);
 	}
 
-	function showJobView(color) {
-		graphics.beginFill(color);
-		graphics.drawPolygon( makeSquare({x: 0, y: 0}, 500) );
+	function initJob(colorIn) {
+		color = colorIn;
 	}
 
 	return state;

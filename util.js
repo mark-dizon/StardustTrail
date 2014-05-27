@@ -1,0 +1,3 @@
+
+/*Utility functions available globally.*/
+

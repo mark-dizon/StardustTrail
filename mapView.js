@@ -22,7 +22,7 @@ function MapView() {
 	function handleInput(event) {
 		switch (event.keyCode) {
 	        case Phaser.Keyboard.LEFT:
-	        	game.state.start(states.event, false);
+	        	game.pushState(states.event);
 	            break;
 	        case Phaser.Keyboard.RIGHT:
 	            break;
@@ -33,6 +33,7 @@ function MapView() {
 	        	game.state.start(states.job);
 	            break;
 	        default:
+				game.state.start(states.job);
 				break;
         }
 	}
