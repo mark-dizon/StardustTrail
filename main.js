@@ -1,5 +1,3 @@
-var screenWidth = 1080;
-var screenHeight = 720;
 var textContent = {
     "mainText":"This is an example dialogue statement",
     "choices" :[{

@@ -13,3 +13,6 @@ directions = {
 	up: 2,
 	down: -2
 }
+
+screenWidth = 1080;
+screenHeight = 720;

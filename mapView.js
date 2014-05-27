@@ -2,6 +2,7 @@
 function MapView() {
 	var graphics;
 	var state = new Phaser.State();
+	var starSystem = new StarSystem();
 	state.preload = preload;
 	state.create = create;
 	state.update = update;
@@ -13,7 +14,7 @@ function MapView() {
 
 	function create(){
 		graphics = state.add.graphics(0,0);
-		drawSomething();
+		starSystem.drawMap(graphics);
 	}
 
 	function update(){
@@ -40,7 +41,7 @@ function MapView() {
 
 	function drawSomething() {
 		graphics.beginFill(0xFF3300);
-		graphics.drawPolygon( makeSquare({x: 0, y: 0}, 500) );
+		graphics.drawCircle(50, 50, 100);
 	}
 
 
