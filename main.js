@@ -34,8 +34,8 @@ function create() {
 	game.state.add( states.map, new MapView() );
     game.state.add( states.job, new JobView() );
     game.state.add( states.event, new EventView() );
-    game.state.add( states.dialogue, new dialogueView(textContent) );
-    game.state.start( states.map );
+    game.state.add( states.dialogue, new DialogueView(textContent) );
+    game.changeState( states.map );
 }
 
 function update() {

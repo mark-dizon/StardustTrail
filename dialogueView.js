@@ -1,5 +1,5 @@
 
-function dialogueView(contentObject) {
+function DialogueView(contentObject) {
 	var graphics;
 	var state = new Phaser.State();
 	state.preload = preload;
@@ -26,7 +26,7 @@ function dialogueView(contentObject) {
 	}
 
 	function handleInput(event) {
-		game.state.start(states.map);
+		game.popState();
 	}
 
 
