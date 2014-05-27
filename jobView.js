@@ -41,8 +41,7 @@ function JobView() {
 	}
 
 	function handleInput(event) {
-		//game.changeState(states.map);
-		node.x = 700;
+		game.changeState(states.map);
 	}
 
 	function initJob(job) {
