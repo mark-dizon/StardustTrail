@@ -30,10 +30,10 @@ function MapView() {
 	         	game.pushState(states.dialogue);
 	            break;
 	        case Phaser.Keyboard.DOWN:
-	        	game.changeState(states.job, 0x003300);
+	        	game.changeState(states.job);
 	            break;
 	        default:
-				game.changeState(states.job, 0x003300);
+				game.changeState(states.job);
 				break;
         }
 	}

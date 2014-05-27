@@ -1,8 +1,19 @@
 
 
 function JobView() {
-	var graphics;
-	var color;
+
+	//Constants
+	var taskNodeDefaults = {
+		width: 150,
+		height: 200,
+		color: 0x2B2B2A,
+		borderColor: 0xFCAE1C,
+		borderWidth: 2
+	}
+
+	//Members
+	var currentJob;
+	var node;
 
 	var state = new Phaser.State();
 	state.preload = preload;
@@ -16,22 +27,28 @@ function JobView() {
 	}
 
 	function create(){
-		graphics = state.add.graphics(0,0);
-		graphics.beginFill(color);
-		graphics.drawPolygon( makeSquare({x: 0, y: 0}, 500) );
+		var rect = taskNodeDefaults;
+		rect.x = 10;
+		rect.y = 10;
+		rect.state = state;
+		node = new TaskNode(rect);
 
+		node.addConnectedNode(new TaskNode(rect))
+			.addConnectedNode(new TaskNode(rect));
 	}
 	
 	function update(){
 	}
 
 	function handleInput(event) {
-		game.changeState(states.map);
+		//game.changeState(states.map);
+		node.x = 700;
 	}
 
-	function initJob(colorIn) {
-		color = colorIn;
+	function initJob(job) {
+		currentJob = job;
 	}
+
 
 	return state;
 }
@@ -71,24 +88,3 @@ function makeTaskNode(prev, isSuccess){
 var dummyJob = {};
 dummyJob.type = "start";
 makeTaskNode( makeTaskNode(dummyJob, true), true);
-
-
-
-
-
-function makeSquare(topLeft, length) {
-	return new Phaser.Polygon([
-		new Phaser.Point(topLeft.x, topLeft.y),
-		new Phaser.Point(topLeft.x, topLeft.y + length),
-		new Phaser.Point(topLeft.x + length, topLeft.y + length),
-		new Phaser.Point(topLeft.x + length, topLeft.y)
-	]);
-}
-
-function makeTriangle(sideLength, center) {
-	return new Phaser.Polygon([
-		new Phaser.Point(0, 0),
-		new Phaser.Point(0, 10),
-		new Phaser.Point(10, 10)
-	]);
-}
