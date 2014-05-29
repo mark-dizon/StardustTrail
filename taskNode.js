@@ -3,15 +3,16 @@ function TaskNode(options) { //extends jobNode
 
 	//Constants
 	var taskNodeDefaults = {
-		width: 150,
-		height: 200,
+		width: 200,
+		height: 250,
 		color: 0x2B2B2A,
 		borderColor: 0xFCAE1C,
 		borderWidth: 2,
 		failEdgeColor :0xFC1C21,
 		successEdgeColor: 0x02AF31 ,
 		completeEdgeColor : 0x004CAF,
-		edgeTraceAnimationSecs : 1
+		inProgressEdgeColor: 0xFFFFFF,
+		edgeTraceAnimationSecs : 0.5
 	}
 
 	var successState = taskNodeStates.incomplete;
@@ -34,7 +35,7 @@ function TaskNode(options) { //extends jobNode
 	var graphics = new JobNode(options);
 
 	graphics.addChild(new Phaser.Text(game, 10, 10, name, 
-						{ font: "12pt Courier", fill: "#FCAE1C", stroke: "#FCAE1C", strokeThickness: 1 }));
+						{ font: "16pt Courier", fill: "#FCAE1C", stroke: "#FCAE1C", strokeThickness: 1 }));
 
 	//Public members 
 	//override to specify the correct edge for connection points
@@ -107,10 +108,18 @@ function TaskNode(options) { //extends jobNode
 		//Draw the outline
 		var outlineColor = borderColor;
 		var outlineWidth = borderWidth;
-		if(successState) {
-			outlineColor = taskNodeDefaults.completeEdgeColor; //(successState === 1) ? taskNodeDefaults.successEdgeColor : taskNodeDefaults.failEdgeColor;
-			outlineWidth = borderWidth + 2;
+		switch(successState) {
+			case taskNodeStates.success : 
+			case taskNodeStates.failure : 
+				outlineColor = taskNodeDefaults.completeEdgeColor; //(successState === 1) ? taskNodeDefaults.successEdgeColor : taskNodeDefaults.failEdgeColor;
+				outlineWidth = borderWidth + 2;
+				break;
+			case taskNodeStates.inprogress:
+				outlineColor = taskNodeDefaults.inProgressEdgeColor;
+				outlineWidth = borderWidth + 4;
+				break;
 		}
+
 		if(outlineWidth > 0) {
 			graphics.lineStyle(outlineWidth, outlineColor);
 			graphics.moveTo(0,0);

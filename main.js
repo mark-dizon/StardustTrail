@@ -26,7 +26,6 @@ function preload(){
 
 function create() {
     //Setup the scaling configuration
-    //game.scale.scaleMode = Phaser.StageScaleMode.SHOW_ALL; //resize your window to see the stage resize too
     game.scale.setShowAll();
     game.scale.refresh();
 
