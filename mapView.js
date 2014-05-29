@@ -52,20 +52,10 @@ function MapView() {
 		}
 
 		if (cursors.left.isDown) {
-			if (cursors.left.shiftKey) {
-				state.world.rotation -= 0.05;
-			}
-			else {
-				state.camera.x -= 4;
-			}
+			state.camera.x -= 4;
 		}
 		else if (cursors.right.isDown) {
-			if (cursors.right.shiftKey)	{
-				state.world.rotation += 0.05;
-			}
-			else {
-				state.camera.x += 4;
-			}
+			state.camera.x += 4;
 		}
 	}
 
