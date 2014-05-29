@@ -15,7 +15,7 @@ var textContent = {
 
 window.onload = function() {
 	//Setup Phaser
-    game = new StardustTrailGame(screenWidth, screenHeight, { preload: preload, create: create, update: update });
+    game = new StardustTrailGame(screenWidth, screenHeight, { preload: preload, create: create, update: update, render: render });
 }
 
 
@@ -38,6 +38,11 @@ function create() {
 
 function update() {
 	//Frame update
+}
+
+function render() {
+
+	game.debug.cameraInfo(game.camera, 32, 32);
 }
 
 function input(event) {

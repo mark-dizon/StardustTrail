@@ -2,56 +2,87 @@
 function MapView() {
 	var graphics;
 	var state = new Phaser.State();
-	var starSystem = new StarSystem();
+	var starSystem;
+	var cursors;
 	state.preload = preload;
 	state.create = create;
 	state.update = update;
 	state.handleInput = handleInput;
+	state.render = render;
 
 	function preload(){
 
 	}
 
 	function create(){
+		state.world.setBounds(-1000,-1000,3000,3000);
+		state.camera.x = 0;
+		state.camera.y = 0
 		graphics = state.add.graphics(0,0);
+		starSystem = new StarSystem(state);
 		starSystem.drawMap(graphics);
+		cursors = state.input.keyboard.createCursorKeys();
 	}
 
 	function update(){
+		if (cursors.up.isDown) {
+			if (cursors.up.shiftKey) {
+				state.world.scale = state.world.scale.add(.05,.05);
+			}
+			else {
+				state.camera.y -= 4;
+			}
+		}
+		else if (cursors.down.isDown) {
+			if (cursors.down.shiftKey) {
+				state.world.scale = state.world.scale.add(-.05, -.05);
+				if(state.world.scale.x < 0)	{
+					state.world.scale.x = 0;
+				}
+				if(state.world.scale.y < 0)	{
+					state.world.scale.y = 0;
+				}
+			}
+			else {
+				state.camera.y += 4;
+			}
+		}
+
+		if (cursors.left.isDown) {
+			if (cursors.left.shiftKey) {
+				state.world.rotation -= 0.05;
+			}
+			else {
+				state.camera.x -= 4;
+			}
+		}
+		else if (cursors.right.isDown) {
+			if (cursors.right.shiftKey)	{
+				state.world.rotation += 0.05;
+			}
+			else {
+				state.camera.x += 4;
+			}
+		}
 	}
 
 	function handleInput(event) {
 		switch (event.keyCode) {
-	        case Phaser.Keyboard.LEFT:
+	        case Phaser.Keyboard.A:
 	        	game.pushState(states.event);
 	            break;
-	        case Phaser.Keyboard.RIGHT:
+	        case Phaser.Keyboard.S:
 	            break;
-	         case Phaser.Keyboard.UP:
+	         case Phaser.Keyboard.D:
 	         	game.pushState(states.dialogue);
 	            break;
-	        case Phaser.Keyboard.DOWN:
+	        case Phaser.Keyboard.F:
 	        	game.changeState(states.job);
 	            break;
-	        default:
-				game.changeState(states.job);
-				break;
+			case Phaser.Keyboard.Z:
+				state.world.camera.
+	            break;
         }
-	}
-
-	function drawSomething() {
-		graphics.beginFill(0xFF3300);
-		graphics.drawCircle(50, 50, 100);
-	}
-
-
-	function makeSquare(topLeft, length) {
-		return new Phaser.Polygon([
-			new Phaser.Point(topLeft.x, topLeft.y),
-			new Phaser.Point(topLeft.x, topLeft.y + length),
-			new Phaser.Point(topLeft.x + length, topLeft.y + length),
-			new Phaser.Point(topLeft.x + length, topLeft.y)
-		]);
 	}
 
 	return state;
