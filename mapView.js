@@ -21,6 +21,9 @@ function MapView() {
 		graphics = state.add.graphics(0,0);
 		starSystem = new StarSystem(state);
 		starSystem.drawMap(graphics);
+		starSystem.getPlanets().forEach(function(planet) {
+			state.add.existing(planet);
+		});
 		cursors = state.input.keyboard.createCursorKeys();
 	}
 

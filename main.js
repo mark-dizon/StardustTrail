@@ -21,8 +21,7 @@ window.onload = function() {
 
 function preload(){
 	//Load assets
-
-
+	game.load.image('planet', 'planet.png');
 }
 
 function create() {

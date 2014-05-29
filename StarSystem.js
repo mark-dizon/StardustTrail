@@ -2,26 +2,10 @@ function StarSystem(state) {
 	var currentPlanet = 0;
 	var numPlanets= 9;
 	var planets = [
-		{
-			x : 300,
-			y : 300,
-			rad : 125,
-			color: 0xFF3300
-		},
-
-		{
-			x : 700,
-			y : 300,
-			rad : 100,
-			color: 0x330033
-		},
-
-		{
-			x : 0,
-			y : 0,
-			rad : 100,
-			color: 0x335533
-		},
+		new Planet(game, 300, 300, 'planet', 'Stan'),
+		new Planet(game, 700, 300, 'planet','Kyle'),
+		new Planet(game, 0,0, 'planet', 'Eric'),
+		new Planet(game, -100,-100, 'planet', 'Kenny'),
 	];
 	var edges = [];
 
@@ -35,14 +19,15 @@ function StarSystem(state) {
 		for(var i = 0; i < 2000; i++) {
 			graphics.drawCircle(state.world.randomX, state.world.randomY, 1);
 		}
-		planets.forEach(function(planet) {
-			graphics.beginFill(planet.color);
-			graphics.drawCircle(planet.x, planet.y, planet.rad);
-		});
+	}
+
+	function getPlanets() {
+		return planets;
 	}
 
 	return {
 		getCurrentPlanet: getCurrentPlant,
+		getPlanets: getPlanets,
 		drawMap: drawMap
 	};
 }
