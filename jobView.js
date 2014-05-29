@@ -1,15 +1,5 @@
 
-
 function JobView() {
-
-	//Constants
-	var taskNodeDefaults = {
-		width: 150,
-		height: 200,
-		color: 0x2B2B2A,
-		borderColor: 0xFCAE1C,
-		borderWidth: 2
-	}
 
 	//Members
 	var currentJob;
@@ -27,14 +17,10 @@ function JobView() {
 	}
 
 	function create(){
-		var rect = taskNodeDefaults;
-		rect.x = 10;
-		rect.y = 10;
-		rect.state = state;
-		node = new TaskNode(rect);
-
-		node.addConnectedNode(new TaskNode(rect))
-			.addConnectedNode(new TaskNode(rect));
+		node = new TaskNode( {x: 10, y:10, state: state} );
+		node.setSuccessNode(new TaskNode({state: state}))
+			.setSuccessNode(new TaskNode({state: state}))
+			.setFailNode(new TaskNode({state: state}));
 	}
 	
 	function update(){
@@ -51,39 +37,3 @@ function JobView() {
 
 	return state;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function makeTaskNode(prev, isSuccess){
-	var taskNode = {};
-	taskNode.type = "Fake task here";
-	if(isSuccess)
-		prev.success = taskNode;
-	else
-		prev.failure = taskNode;
-
-	return taskNode;
-};
-
-var dummyJob = {};
-dummyJob.type = "start";
-makeTaskNode( makeTaskNode(dummyJob, true), true);

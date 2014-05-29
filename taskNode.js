@@ -1,30 +1,41 @@
 
-	function TaskNode(options) {
+	function TaskNode(options) { //extends jobNode
 
 		var distance_between_nodes = 400;
+
+		//Constants
+		var taskNodeDefaults = {
+			width: 150,
+			height: 200,
+			color: 0x2B2B2A,
+			borderColor: 0xFCAE1C,
+			borderWidth: 2,
+			failEdgeColor :0xFC1C21,
+			successEdgeColor: 0x004CAF
+		}
 		
 		var state = options.state;
 		var x = options.x;
 		var y = options.y;
-		var width = options.width;
-		var height = options.height;
+		var width = options.width || taskNodeDefaults.width;
+		var height = options.height || taskNodeDefaults.height;
 
-
-		var color = options.color || 0xffffff;
-		var borderColor = options.borderColor || 0;
-		var borderWidth = options.borderWidth || 0;
+		var color = options.color || taskNodeDefaults.color;
+		var borderColor = options.borderColor || taskNodeDefaults.borderColor;
+		var borderWidth = options.borderWidth || taskNodeDefaults.borderWidth;
 
 		var name = options.name || "Unnamed Job";
 		
-		var graphics = state.add.graphics(x,y);
+		var graphics = new JobNode(options);
+
 		graphics.addChild(new Phaser.Text(game, 10, 10, name, 
 							{ font: "12pt Courier", fill: "#FCAE1C", stroke: "#FCAE1C", strokeThickness: 1 }));
 
-		//Public members
+		//Public members 
+		//override to specify the correct edge for connection points
 		graphics.upperEdge = function(){ 
 			return {x: width /2, y: graphics.y};
 		};
-
 		graphics.lowerEdge = function(){ 
 			return {x: width/2, y: height}; 
 		};
@@ -35,45 +46,18 @@
 			return {x: width, y: height/2};
 		};
 
-
-		//Methods
-		graphics.addConnectedNode = function(otherNode, direction, lineColor) {
-			lineColor = lineColor || borderColor;
+		graphics.setSuccessNode = function(node, direction) {
 			direction = direction || directions.right;
-
-			function getNodeEdge(node, direction) {
-				switch(direction) {
-					case directions.left  : return node.leftEdge();
-					case directions.right : return node.rightEdge();
-					case directions.up    : return node.upperEdge();
-					case directions.down  : return node.lowerEdge();
-				}
-			}
-
-			function setConnectedNodePosition(node, direction){
-				node.x = 0;
-				node.y = 0;
-				switch(direction) {
-					case directions.left  : return node.x = -distance_between_nodes;
-					case directions.right : return node.x = distance_between_nodes;
-					case directions.up    : return node.x = -distance_between_nodes;
-					case directions.down  : return node.x = distance_between_nodes;
-				}
-			}
-
-			//make the other node anchored relative to this one
-			graphics.addChild(otherNode);
-			setConnectedNodePosition(otherNode, direction);
-
-			//draw a line between them
-			var start = getNodeEdge(graphics, direction);
-			var end = getNodeEdge(otherNode, -direction);
-			graphics.lineStyle(borderWidth, lineColor);
-			graphics.moveTo(start.x, start.y);
-			graphics.lineTo(end.x, end.y);
-
-			return otherNode;
+			graphics.lineStyle(borderWidth, taskNodeDefaults.successEdgeColor);
+			return graphics.addConnectedNode(node, direction);
 		}
+
+		graphics.setFailNode = function(node, direction) {
+			direction = direction || directions.down;
+			graphics.lineStyle(borderWidth, taskNodeDefaults.failEdgeColor);
+			return graphics.addConnectedNode(node, direction);
+		}
+		//Methods
 
 		graphics.redraw = draw;
 
