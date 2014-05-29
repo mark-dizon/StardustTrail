@@ -13,3 +13,17 @@ directions = {
 	up: 2,
 	down: -2
 }
+
+screenWidth = 1080;
+screenHeight = 720;
+
+
+StatNames = ['smarts', 'swagger', 'moxy', 'muscle'];
+
+SkillStats = {
+  piloting: 'smarts',
+  lockpicking: 'swagger',
+  bluffing: 'moxy'
+};
+
+SkillBonus = 3;
