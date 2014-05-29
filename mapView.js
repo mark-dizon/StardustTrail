@@ -21,6 +21,9 @@ function MapView() {
 		graphics = state.add.graphics(0,0);
 		starSystem = new StarSystem(state);
 		starSystem.drawMap(graphics);
+		starSystem.getPlanets().forEach(function(planet) {
+			state.add.existing(planet);
+		});
 		cursors = state.input.keyboard.createCursorKeys();
 	}
 
@@ -49,20 +52,10 @@ function MapView() {
 		}
 
 		if (cursors.left.isDown) {
-			if (cursors.left.shiftKey) {
-				state.world.rotation -= 0.05;
-			}
-			else {
-				state.camera.x -= 4;
-			}
+			state.camera.x -= 4;
 		}
 		else if (cursors.right.isDown) {
-			if (cursors.right.shiftKey)	{
-				state.world.rotation += 0.05;
-			}
-			else {
-				state.camera.x += 4;
-			}
+			state.camera.x += 4;
 		}
 	}
 
