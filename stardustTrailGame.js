@@ -5,6 +5,7 @@ function StardustTrailGame(screenWidth, screenHeight, gameLoopCallbacks){
 
     game = new Phaser.Game(screenWidth, screenHeight, Phaser.AUTO, '', gameLoopCallbacks);
 
+
     //Shortcut functions for state transitions:
 
     var stateStack = [];

@@ -21,11 +21,14 @@ window.onload = function() {
 
 function preload(){
 	//Load assets
-
-
 }
 
 function create() {
+    //Setup the scaling configuration
+    //game.scale.scaleMode = Phaser.StageScaleMode.SHOW_ALL; //resize your window to see the stage resize too
+    game.scale.setShowAll();
+    game.scale.refresh();
+
 	//Initialize
 	game.input.keyboard.addCallbacks(null, null, input);
 	

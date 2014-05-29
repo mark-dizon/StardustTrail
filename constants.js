@@ -14,8 +14,16 @@ directions = {
 	down: -2
 }
 
-screenWidth = 1080;
-screenHeight = 720;
+taskNodeStates = {
+	incomplete: 0,
+	inprogress: 1,
+	success: 2,
+	failure: -2
+
+}
+
+screenWidth = 1920;
+screenHeight = 1080;
 
 
 StatNames = ['smarts', 'swagger', 'moxy', 'muscle'];

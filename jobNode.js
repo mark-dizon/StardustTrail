@@ -2,7 +2,7 @@
 //Represents one graphical node in the job graph
 function JobNode(options) {
 
-	var distance_between_nodes = 400;
+	var distanceBetweenNodes = 400;
 	
 	var state = options.state;
 	var x = options.x;
@@ -49,10 +49,10 @@ function JobNode(options) {
 			node.x = 0;
 			node.y = 0;
 			switch(direction) {
-				case directions.left  : return node.x = -distance_between_nodes;
-				case directions.right : return node.x = distance_between_nodes;
-				case directions.up    : return node.y = -distance_between_nodes;
-				case directions.down  : return node.y = distance_between_nodes;
+				case directions.left  : return node.x = -distanceBetweenNodes;
+				case directions.right : return node.x = distanceBetweenNodes;
+				case directions.up    : return node.y = -distanceBetweenNodes;
+				case directions.down  : return node.y = distanceBetweenNodes;
 			}
 		}
 
