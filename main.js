@@ -1,11 +1,24 @@
 var textContent = {
     "mainText":"This is an example dialogue statement",
     "choices" :[{
-    	"id" : 1,
-    	"textLine" : "this is a text choice"
+        "id" : 1,
+        "textLine" : "this is a text choice",
+        "success" : 4,
+        "failure" : 3
     },{
-    	"id" : 2,
-    	"textLine" : "this is a second text choice"
+        "id" : 2,
+        "textLine" : "this is a second text choice",
+        "success" : 4,
+        "failure" : 3
+    }
+    ],
+    "results" : [{
+        "id" : 4,
+        "textLine" : "you have made the right choice"
+    },
+    {
+        "id" : 3,
+        "textline " : "that was the wrong choice"
     }
     ]
 }

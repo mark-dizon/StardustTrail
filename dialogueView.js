@@ -1,4 +1,4 @@
-
+//Temp takes in whole json object,
 function DialogueView(contentObject) {
 	var graphics;
 	var state = new Phaser.State();
@@ -9,6 +9,7 @@ function DialogueView(contentObject) {
 	var text;
 	var choiceText;
 	var line = '';
+	var dialogueButton;
 	
 
 
@@ -18,7 +19,8 @@ function DialogueView(contentObject) {
 
 	function create(){
 		graphics = state.add.graphics(0,0);
-		text = game.add.text(32, 380, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
+		text = game.add.text(64, 380, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
+		choiceText = game.add.text(64, 380, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
    		parseTextObject(contentObject);
 	}
 
@@ -35,8 +37,8 @@ function DialogueView(contentObject) {
 	}
 
 	function drawChoice(textLine, offset){
-		text = game.add.text(32, offset, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
-		text.setText(textLine);
+		choiceText = game.add.text(64, offset, '', { font: "20pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
+		choiceText.setText(textLine);
 	}
 	
 
@@ -44,12 +46,34 @@ function DialogueView(contentObject) {
 		var mainText = contentObject.mainText;
 		drawMainText(mainText);
 		var choiceOffset = 420;
-
-		for (var i in contentObject.choices){
+		//Fuck you Javascript
+		for (var i = 0; i < contentObject.choices.length; i++){
+			(function(){
 			var choice = contentObject.choices[i].textLine;
+			var index = i;
+			  game.add.button(32, choiceOffset+i*50, 'button' + i, function(){
+			 	selectDialogueOption(contentObject,contentObject.choices[index].id)
+			 });
    			drawChoice(choice,choiceOffset);
-   			choiceOffset+= 20
+   			choiceOffset+= 20;
+   			})();
 		} 
+	}
+
+	function selectDialogueOption(contentObject,selectedChoice){
+		var success = "";
+		for(var i in contentObject.choices){
+			if(contentObject.choices[i].id === selectedChoice){
+				success = contentObject.choices[i].success;
+			}
+		}
+			
+   			for (var i in contentObject.results){
+				if(success === contentObject.results[i].id){
+					choiceText.destroy();
+					drawMainText(contentObject.results[i].textLine);
+				}
+			} 
 	}
 
 	

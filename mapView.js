@@ -64,6 +64,8 @@ function MapView() {
 	        case Phaser.Keyboard.A:
 	        	game.pushState(states.event);
 	            break;
+	        case Phaser.Keyboard.M:
+	        	game.pushState(states.Dialogue);
 	        case Phaser.Keyboard.S:
 	            break;
 	         case Phaser.Keyboard.D:
