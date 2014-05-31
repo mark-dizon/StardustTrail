@@ -19,8 +19,9 @@ function MainMenu() {
     var HIDE_TEXT_ON_LAUNCH = false;
     // =============================
 
-    var STAR_FIELD_HEIGHT = game.height * 4;
-    var STAR_FIELD_WIDTH = game.width * 4;
+    var STAR_FIELD_HEIGHT = game.height * 3;
+    var STAR_FIELD_WIDTH = game.width * 3;
+    var CAMERA_MAX_X_POS = STAR_FIELD_WIDTH - game.width;
 
     var MENU_STARS = 3000;
     var STAR_FPS = 6;
@@ -43,17 +44,30 @@ function MainMenu() {
 
     var MAX_ROTATION_SPEED = 3;
     var MAX_ROTATION_ACCELERATION = .05;
+    var MAX_ROTATION_DECELERATION = .02;
     var NORMAL_ROTATION_SPEED = .01;
 
     var currentMoveSpeed = NORMAL_MOVE_SPEED;
     var currentRotationSpeed = NORMAL_ROTATION_SPEED;
 
+    var STATE_CHANGE_MS_DELAY = 1500;
+    var STATE_CHANGE_X_POS = 1300;
+
+    var TITLE_X_POS = 400;
+    var TITLE_Y_POS = 400;
+    var SUBTITLE_X_POS = 400;
+    var SUBTITLE_Y_POS = 600;
+
+
+    //flags
+    var enteringLaunchState = false;
+    var enteringSlowDownState = false;
+    var stateChangeScheduled = false;
+
+    //groups
     var starGroup;
     var starGroup2;
     var textGroup;
-
-    var STATE_CHANGE_X_POS = 2500;
-    var enteringGameState = false;
 
     /**
      * First function to run, loads the assets for this state
@@ -73,7 +87,7 @@ function MainMenu() {
         else {
             state.world.setBounds(0, 0, STAR_FIELD_WIDTH, STAR_FIELD_HEIGHT);
 
-            state.camera.x = -game.height * 4;
+            state.camera.x = 0;
             state.camera.y = 0;
 
             graphics = state.add.graphics(0, 0);
@@ -93,8 +107,8 @@ function MainMenu() {
             }
 
             //text items
-            game.add.text(400, 400, gameTitleText, { fill: '#FFFFFF', font: '180px Tahoma' }, textGroup);
-            game.add.text(400, 600, gameStartText, { fill: '#FFFFFF' }, textGroup);
+            game.add.text(TITLE_X_POS, TITLE_Y_POS, gameTitleText, { fill: '#FFFFFF', font: '180px Tahoma' }, textGroup);
+            game.add.text(SUBTITLE_X_POS, SUBTITLE_Y_POS, gameStartText, { fill: '#FFFFFF' }, textGroup);
         }
     }
 
@@ -103,21 +117,30 @@ function MainMenu() {
      */
     function update() {
 
-        if (enteringGameState && state.camera.x >= STATE_CHANGE_X_POS && currentRotationSpeed >= MAX_ROTATION_SPEED) {
+        if (enteringSlowDownState && currentRotationSpeed == 0) {
             //ready to do state change
-
-            //change state
-            //TODO somehow do a fade transition here?
-            game.changeState(NEXT_STATE);
-
-            //reset camera and world stuff
-            state.world.setBounds(0, 0, game.width, game.height);
-            state.camera.x = 0;
-            state.camera.y = 0;
+            if (!stateChangeScheduled) {
+                //set it up to delay a little before change
+                stateChangeScheduled = true;
+                setTimeout(function () {
+                    //change state
+                    //TODO somehow do a fade transition here?
+                    game.changeState(NEXT_STATE);
+                }, STATE_CHANGE_MS_DELAY);
+            }
         }
-        else if (enteringGameState) {
+        else if (enteringSlowDownState) {
+            progressSlowDown();
+        }
+
+        else if (enteringLaunchState && state.camera.x >= STATE_CHANGE_X_POS && currentRotationSpeed >= MAX_ROTATION_SPEED) {
+            //at max rotation, so start deceleration
+            enteringSlowDownState = true;
+        }
+        else if (enteringLaunchState) {
             progressFast();
         }
+
         else {
             progressNormal();
         }
@@ -129,7 +152,7 @@ function MainMenu() {
      */
     function progressNormal() {
         //normal movement
-        state.camera.x += easeOut(NORMAL_MOVE_SPEED, state.camera.x, STAR_FIELD_WIDTH);
+        state.camera.x += easeOut(NORMAL_MOVE_SPEED, state.camera.x, CAMERA_MAX_X_POS);
         starGroup.angle -= NORMAL_ROTATION_SPEED;
         starGroup2.angle -= (NORMAL_ROTATION_SPEED * SECONDARY_STARS_ROTATION_SLOW_RATIO);
     }
@@ -142,10 +165,21 @@ function MainMenu() {
         currentMoveSpeed = Math.min(currentMoveSpeed + MAX_MOVE_ACCELERATION, MAX_MOVE_SPEED);
 
         //accel rotation speed
-        currentRotationSpeed = Math.min(currentRotationSpeed + easeIn(MAX_ROTATION_ACCELERATION, state.camera.x, STAR_FIELD_WIDTH), MAX_ROTATION_SPEED);
+        currentRotationSpeed = Math.min(currentRotationSpeed + easeIn(MAX_ROTATION_ACCELERATION, state.camera.x, CAMERA_MAX_X_POS), MAX_ROTATION_SPEED);
 
         //ease out based on reaching edge of star field
-        state.camera.x += easeOut(currentMoveSpeed, state.camera.x, STAR_FIELD_WIDTH);
+        state.camera.x += easeOut(currentMoveSpeed, state.camera.x, CAMERA_MAX_X_POS);
+        starGroup.angle += currentRotationSpeed;
+        starGroup2.angle += (currentRotationSpeed * SECONDARY_STARS_ROTATION_FAST_RATIO);
+    }
+
+    /**
+     * Slows down the rotation until 0
+     */
+    function progressSlowDown() {
+        //decelerate rotation speed until stopped
+        currentRotationSpeed = Math.max(currentRotationSpeed - MAX_ROTATION_DECELERATION, 0);
+
         starGroup.angle += currentRotationSpeed;
         starGroup2.angle += (currentRotationSpeed * SECONDARY_STARS_ROTATION_FAST_RATIO);
     }
@@ -158,7 +192,7 @@ function MainMenu() {
 //        currentMoveSpeed = Math.max(currentMoveSpeed - MAX_MOVE_ACCELERATION, -MAX_MOVE_SPEED);
 //
 //        //decel rotation speed
-//        currentRotationSpeed = Math.min(currentRotationSpeed - easeIn(MAX_ROTATION_ACCELERATION, state.camera.x, STAR_FIELD_WIDTH), NORMAL_ROTATION_SPEED);
+//        currentRotationSpeed = Math.min(currentRotationSpeed - easeIn(MAX_ROTATION_ACCELERATION, state.camera.x, CAMERA_MAX_X_POS), NORMAL_ROTATION_SPEED);
 //
 //        //ease out based on reaching 0th x position with camera
 //        state.camera.x += easeOut(currentMoveSpeed, STAR_FIELD_WIDTH - state.camera.x, STAR_FIELD_WIDTH);
@@ -176,7 +210,7 @@ function MainMenu() {
             default:
 
                 //triggers flag to start camera movement in update -> leads to state change
-                enteringGameState = true;
+                enteringLaunchState = true;
 
                 if (HIDE_TEXT_ON_LAUNCH) {
                     textGroup.alpha = 0;
@@ -247,6 +281,7 @@ function MainMenu() {
      * @returns {number}
      */
     function easeOut(maxStep, current, max) {
+        //TODO there is a bug somehow with ease out where the current never gets close to the max
         return (maxStep) * (1 - current / max);
     }
 
