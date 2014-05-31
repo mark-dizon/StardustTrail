@@ -21,7 +21,7 @@ var textContent = {
         "textline " : "that was the wrong choice"
     }
     ]
-}
+};
 
     
     
@@ -29,7 +29,7 @@ var textContent = {
 window.onload = function() {
 	//Setup Phaser
     game = new StardustTrailGame(screenWidth, screenHeight, { preload: preload, create: create, update: update, render: render });
-}
+};
 
 
 function preload(){
@@ -45,11 +45,12 @@ function create() {
 	//Initialize
 	game.input.keyboard.addCallbacks(null, null, input);
 	
+	game.state.add( states.main, new MainMenu() );
 	game.state.add( states.map, new MapView() );
     game.state.add( states.job, new JobView() );
     game.state.add( states.event, new EventView() );
     game.state.add( states.dialogue, new DialogueView(textContent) );
-    game.changeState( states.map );
+    game.changeState( states.main );
 }
 
 function update() {

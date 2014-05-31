@@ -1,18 +1,22 @@
 
+gameTitleText = 'Stardust Trail';
+gameStartText = 'Press Any Key To Launch';
+
 //Enums
 states = {
 	job: "Job",
 	map: "Map",
 	dialogue: "Dialogue",
-	event: "Event"
-}
+	event: "Event",
+	main: "MainMenu"
+};
 
 directions = {
 	left: -1,
 	right: 1,
 	up: 2,
 	down: -2
-}
+};
 
 taskNodeStates = {
 	incomplete: 0,
@@ -20,7 +24,7 @@ taskNodeStates = {
 	success: 2,
 	failure: -2
 
-}
+};
 
 screenWidth = 1920;
 screenHeight = 1080;
