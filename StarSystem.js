@@ -7,8 +7,6 @@ function StarSystem(state) {
 		new Planet(game, 0,0, 'planet', 'Eric'),
 		new Planet(game, -100,-100, 'planet', 'Kenny'),
 	];
-	var edges = [];
-
 
 	function getCurrentPlant() {
 		return planets[currentPlanet];
