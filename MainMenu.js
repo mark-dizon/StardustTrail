@@ -1,5 +1,5 @@
 /*
- Main menu for the game.
+ Main menu for the game.  Shows Title
  */
 
 function MainMenu() {
