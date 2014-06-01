@@ -18,6 +18,7 @@ function MapView() {
 		state.world.setBounds(-1000,-1000,3000,3000);
 		state.camera.x = 0;
 		state.camera.y = 0
+
 		graphics = state.add.graphics(0,0);
 		starSystem = new StarSystem(state);
 		starSystem.drawMap(graphics);
