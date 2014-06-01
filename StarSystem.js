@@ -5,7 +5,7 @@ function StarSystem(state) {
 		new Planet(game, 300, 300, 'planet', 'Stan'),
 		new Planet(game, 700, 300, 'planet','Kyle'),
 		new Planet(game, 0,0, 'planet', 'Eric'),
-		new Planet(game, -100,-100, 'planet', 'Kenny'),
+		new Planet(game, -100,-100, 'planet', 'Kenny')
 	];
 
 	function getCurrentPlant() {
