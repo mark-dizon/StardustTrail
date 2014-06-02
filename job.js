@@ -39,35 +39,25 @@
 
 //Interfaces 
 
-	/**Node can refer to StartNode, EndNode, or TaskNode*/
+	EdgeType = "normal" || "success" || "fail" ;
+	NodeType = "start" || "goal" || "lose" || "task";
 
-	var Edge = {
+	Edge = {
+		getType : function() { return /*EdgeType*/ }
 		getFrom : function(){return /*[Node], one or more, that input to this edge (arrow pointing away)*/} 
 		getTo : function(){return /*[Node], one or more, that output from this edge (arrow pointing toward)*/} 
 	}
 
-	//Node that the job can start from. Must be connected to an end node for job to complete.
-	var StartNode = {
-		getType : function(){return "start"},
-		getEdge : function(){return /*the edge connected to this start node*/}
+	//A node in the job graph.
+	Node = {
+		getType : function(){return /*NodeType*/},
+		getData : function() {return /*the [TaskData], one or more, for this node. More than one means multiple tasks must be completed to pass this node
+										if the node is not a task node this should return null. */},
+		getGridPos : function() {return {x: /*0-4*/ y: /*0-2*/}};
 	}
 
-	//A node that ends the job, could be either a goal or lose node.
-	var EndNode = {
-		getType : function(){return /* "goal" || "lose" */},
-		getEdge : function(){return /*the edge connected to this end node*/}
-	}
-
-	//A node representing a task that must be passed or failed. It can have multiple TaskData, which means these tasks must all be completed concurrently to pass the node.
-	var TaskNode = {
-		getType : function(){return "task"},
-		getData : function() {return /*the [TaskData], one or more, for this node. More than one means multiple tasks must be completed to pass this node*/},
-		getSuccessEdge : function() {return /*Edge to go to if node is passed*/},
-		getFailEdge : function() {return /*Edge to go to if node is failed, or null, if there is no fail edge for this node*/}
-	}
-
-	var Job = {
-		getData: function() {return JobData},
+	Job = {
+		getData: function() {return /*JobData*/},
 		getNodes : function() {return /*[Node], all nodes in the job*/},
 		getEdges : function() {return /*[Edge], all edges in the job*/}
 	}
