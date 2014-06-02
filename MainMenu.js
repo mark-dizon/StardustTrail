@@ -14,7 +14,7 @@ function MainMenu() {
 
     // =============================
     // Optional Config
-    var SKIP_MAIN_MENU = false;
+    var SKIP_MAIN_MENU = true;
     var NEXT_STATE = states.map;
     var HIDE_TEXT_ON_LAUNCH = false;
     // =============================

@@ -8,7 +8,8 @@ states = {
 	map: "Map",
 	dialogue: "Dialogue",
 	event: "Event",
-	main: "MainMenu"
+	main: "MainMenu",
+	planet: "Planet"
 };
 
 directions = {
