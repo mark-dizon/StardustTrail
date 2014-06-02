@@ -39,27 +39,25 @@
 
 //Interfaces 
 
-	/**Node can refer to StartNode, EndNode, or TaskNode*/
+	EdgeType = "normal" || "success" || "fail" ;
+	NodeType = "start" || "goal" || "lose" || "task";
 
-	var EdgeType = "normal" || "success" || "fail" ;
-	var NodeType = "start" || "goal" || "lose" || "task";
-
-	var Edge = {
+	Edge = {
 		getType : function() { return /*EdgeType*/ }
 		getFrom : function(){return /*[Node], one or more, that input to this edge (arrow pointing away)*/} 
 		getTo : function(){return /*[Node], one or more, that output from this edge (arrow pointing toward)*/} 
 	}
 
 	//A node in the job graph.
-	var Node = {
-		getType : function(){return NodeType},
+	Node = {
+		getType : function(){return /*NodeType*/},
 		getData : function() {return /*the [TaskData], one or more, for this node. More than one means multiple tasks must be completed to pass this node
 										if the node is not a task node this should return null. */},
-		getGridPos : function() {return {x: /*0-4*/ y: /*0-4*/}};
+		getGridPos : function() {return {x: /*0-4*/ y: /*0-2*/}};
 	}
 
-	var Job = {
-		getData: function() {return JobData},
+	Job = {
+		getData: function() {return /*JobData*/},
 		getNodes : function() {return /*[Node], all nodes in the job*/},
 		getEdges : function() {return /*[Edge], all edges in the job*/}
 	}
