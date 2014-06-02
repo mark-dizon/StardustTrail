@@ -50,6 +50,7 @@ function create() {
     game.state.add( states.job, new JobView() );
     game.state.add( states.event, new EventView() );
     game.state.add( states.dialogue, new DialogueView(textContent) );
+//	game.state.add( states.planet, new PlanetView());
     game.changeState( states.main );
 }
 
