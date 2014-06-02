@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/tools/tools.js"></script>
 
 <div id="attributeCheck form" style="padding-left:40px; padding-bottom:40px;">
 <form class="form-horizontal">
@@ -59,12 +61,16 @@
 <!-- Form Name -->
 <legend>Attribute Check Modifier</legend>
 
-<!-- Text input-->
+<!-- Select Basic -->
 <div class="control-group">
-  <label class="control-label" for="attributeCheckModifer-name">Attribute Check Modifier Name</label>
+  <label class="control-label" for="attributeCheckModifer-stat">AttributeCheck Select Stat</label>
   <div class="controls">
-    <input id="attributeCheckModifer-name" name="attributeCheckModifer-name" type="text" placeholder="" class="input-xlarge">
-    
+    <select id="attributeCheckModifer-stat" name="attributeCheckModifer-stat" class="input-xlarge">
+      <option>smarts</option>
+      <option>swagger</option>
+      <option>moxy</option>
+      <option>muscle</option>
+    </select>
   </div>
 </div>
 
@@ -220,6 +226,15 @@
     
   </div>
 </div>
+
+<!-- Textarea -->
+<div class="control-group">
+  <label class="control-label" for="taskdata-check">Task Data Check Modifier</label>
+  <div class="controls">                     
+    <textarea id="taskdata-check" name="taskdata-check"></textarea>
+  </div>
+</div>
+
 
 <!-- Textarea -->
 <div class="control-group">
