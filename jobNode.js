@@ -27,46 +27,45 @@ function JobNode(options) {
 		return {x: graphics.x, y: graphics.y};
 	};
 
+	graphics.absolutePosition = {
+		x: x, y:y
+	};
+
 	graphics.state = state; 
+
+	if(options.name)
+		graphics.name = options.name;
 
 
 	//Methods
 
-	//Connects a node to this one. Optional third parameter is the class of Edge to use to make the connection
-	graphics.addConnectedNode = function(otherNode, direction, edge) {
+	//Connect to an already positioned node. Optional second parameter is class of Edge to use for connection
+	graphics.connectNode = function(otherNode, edge) {
 		edge = edge || JobNodeEdge(state);
 
-		function getNodeEdge(node, direction) {
-			switch(direction) {
-				case directions.left  : return node.leftEdge();
-				case directions.right : return node.rightEdge();
-				case directions.up    : return node.upperEdge();
-				case directions.down  : return node.lowerEdge();
-			}
-		}
-
-		function setConnectedNodePosition(node, direction){
-			node.x = 0;
-			node.y = 0;
-			switch(direction) {
-				case directions.left  : return node.x = -distanceBetweenNodes;
-				case directions.right : return node.x = distanceBetweenNodes;
-				case directions.up    : return node.y = -distanceBetweenNodes;
-				case directions.down  : return node.y = distanceBetweenNodes;
-			}
-		}
-
-		//make the other node anchored relative to this one
-		graphics.addChild(otherNode);
-		setConnectedNodePosition(otherNode, direction);
+		//get the direction to the other node
+		var left = Phaser.Math.sign(otherNode.x - graphics.x);
+		var up = Phaser.Math.sign(otherNode.y - graphics.y);
+		var direction;
+		if(left !== 0)
+			direction = (left > 0) ? directions.right : directions.left;
+		else 
+			direction = (up > 0) ? directions.down : directions.up;
 
 		//draw a line between them
 		var start = getNodeEdge(graphics, direction);
 		var end = getNodeEdge(otherNode, -direction);
 		edge.initEdge(graphics, start, end);
 		edgeData.push({edge: edge, node: otherNode});
+	}
 
-		return otherNode;
+	function getNodeEdge(node, direction) {
+		switch(direction) {
+			case directions.left  : return node.leftEdge();
+			case directions.right : return node.rightEdge();
+			case directions.up    : return node.upperEdge();
+			case directions.down  : return node.lowerEdge();
+		}
 	}
 
 	graphics.animateToNext = function(edgeIndex){
@@ -125,7 +124,6 @@ function JobNodeEdge(state, color, completeColor) {
 	graphics.initEdge = function(parent, startIn, endIn) {
 		start = startIn;
 		end = endIn;
-		parent.addChild(graphics);
 		draw();
 	}
 

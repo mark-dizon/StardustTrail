@@ -23,8 +23,12 @@ taskNodeStates = {
 	inprogress: 1,
 	success: 2,
 	failure: -2
-
 };
+
+jobGraphDimensions = {
+	rows: 5, 
+	columns: 3
+}
 
 screenWidth = 1920;
 screenHeight = 1080;

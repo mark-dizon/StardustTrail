@@ -1,9 +1,16 @@
 
 function JobView() {
 
+	var graphVisuals = {
+		jobGraphEdgePadding : 100, //px
+		normalEdgeColor : 0xFCAE1C,
+		failEdgeColor :0xFC1C21,
+		successEdgeColor: 0x02AF31 ,
+		completeEdgeColor : 0x004CAF,
+	}
+
 	//Members
 	var currentJob;
-	var node;
 	var afterInputCallback = null;
 	var tempCompleteSound;
 
@@ -40,7 +47,7 @@ function JobView() {
 									{ font: "16pt Tahoma", fill: "#FFFFFF"});
 
 
-		//mockJobPlaythrough();
+		mockJobPlaythrough();
 	}
 
 
@@ -66,49 +73,67 @@ function JobView() {
 
 	function createJobGraph(job) {
 	
+		//Draw nodes
 		var nodes = job.getNodes();
 		var constructedNodes = [];
-		var startNode;
 		for(var i = 0; i < nodes.length; ++i) {
 			var currentNode = nodes[i];
+			var gridPos = currentNode.getGridPos();
+			var position = gridToScreenPos(gridPos.x, gridPos.y);
 			switch(currentNode.getType()) {
 				case "start" :
-					constructedNodes[i] = new TaskNode({state: state, name : "Start"});
-					startNode = currentNode;
-					currentNode.visual = constructedNodes[i];
+					constructedNodes[i] = new TaskNode({state: state, name : "Start", x: position.x, y: position.y});
+					globalStart = constructedNodes[i]; //TEMPORARY, real game must infer where to start based on character placement
 					break;
 				case "goal" :
 				case "lose" :
-					constructedNodes[i] = new TaskNode({state: state, name : "Goal"});
-					currentNode.visual = constructedNodes[i];
+					constructedNodes[i] = new TaskNode({state: state, name : "End", x: position.x, y: position.y});
 					break;
 				case "task" :
 					constructedNodes[i] = new TaskNode({ 
 						state: state, 
-						name : currentNode.getData().name 
+						name : currentNode.getData().name , 
+						x: position.x, y: position.y
 					});
-					currentNode.visual = constructedNodes[i];
+					constructedNodes[i].data = currentNode.getData(); //attach data to visual node for use in resolving.
+			}
+			currentNode.visual = constructedNodes[i];
+		}
+
+		//Connect nodes with edges
+		var edges = job.getEdges();
+		for(var i = 0; i < edges.length; ++i) {
+
+			var edgeData = edges[i];
+			var from = edgeData.getFrom()[0].visual;
+			var to = edgeData.getTo()[0].visual;
+
+			var edge;
+			switch(edgeData.getType()) {
+				case "normal":
+					if(from.setNextNode)
+						from.setNextNode(to);
+					break;
+				case "success" :
+					if(from.setSuccessNode)
+						from.setSuccessNode(to);
+					break;
+				case "fail":
+					if(from.setFailNode)
+						from.setFailNode(to);
+					break;
 			}
 		}
 
-		//Make critical path
-		function getNextCriticalPathEdge(node) {
-			if(node.getType() === "task")
-				return node.getSuccessEdge();
-			if(node.getType() === "goal" || node.getType() === "lose")
-				return null
-			else return node.getEdge();
-		}
-		var current = startNode;
-		while (current != null) {
-			var edge = getNextCriticalPathEdge(current);
-			if(edge === null) break;
+	}
 
-			var from = edge.getFrom()[0].visual;
-			var toNode = edge.getTo()[0];
-			var to = toNode.visual;
-			from.setSuccessNode(to);
-			current = toNode;
+	function gridToScreenPos(row, col) {
+		var jobGraphEdgePadding = graphVisuals.jobGraphEdgePadding;
+		var rowWidth = (screenWidth - jobGraphEdgePadding) / jobGraphDimensions.rows;
+		var colHeight = (screenHeight - jobGraphEdgePadding) / jobGraphDimensions.columns;
+		return {
+			x: (row * rowWidth) + jobGraphEdgePadding,
+			y: col * colHeight + jobGraphEdgePadding
 		}
 	}
 
@@ -116,10 +141,20 @@ function JobView() {
 		afterInputCallback = afterInputFunction;
 	}
 
+	function beginJob() {
+		var startingPoint = globalStart; //TEMPORARY, need to base starting point on character assignment
+
+		startingPoint.setCompletionState(taskNodeStates.inprogress);
+
+	}
+
 	//Fake resolving the mockup job graph
 	function mockJobPlaythrough() {
 
-		node.setCompletionState(taskNodeStates.inprogress);
+		//TODO: Logic for actually completing job
+		function completeTask(nodeData, character){
+			return Phaser.Math.randomSign() > 0; //just flip a coin
+		}
 
 		function resolveNode(node, success, callback) {
 			tempCompleteSound.play();
@@ -130,20 +165,22 @@ function JobView() {
 			});
 		}
 
-		waitOnInput(function() {
-			resolveNode(node, true, function(nextNode) {
-				resolveNode(nextNode, true, function(nextNode) {
-					resolveNode(nextNode, false, function(nextNode) {
-						resolveNode(nextNode, null);
-					})
-				})
-			})
+		function resolveSuccess(node) {
+			var success = completeTask(node.data /*TODO, bound character*/);
+			resolveNode(node, success, resolveSuccess);
+		}
+
+		globalStart.setCompletionState(taskNodeStates.inprogress);
+
+		waitOnInput(function(){
+			resolveSuccess(globalStart);
 		});
+
 	}
 
 	function makeMockJob() {
 
-		function makeTask(name){
+		function makeTask(name, row, col){
 			var task = {
 				name: name, 
 				desc: "a task",
@@ -153,45 +190,50 @@ function JobView() {
 				modifiers : []
 			};
 			var taskNode = {
-				successEdge : null,
-				failEdge : null,
 				getData : function() {return task; },
-				getSuccessEdge: function() {return this.successEdge; },
-				getFailEdge : function() {return this.failEdge; },
-				getType : function() {return "task";}
+				getType : function() {return "task";},
+				getGridPos : function() { return {x:row, y: col}; }
 			}
 			return taskNode;
 		}
 
-		function makeEdge(from, to, container) {
+		function makeEdge(from, to, type) {
 			var edge = {
 				getFrom : function(){return [from]; },
-				getTo : function() {return [to]; }
+				getTo : function() {return [to]; },
+				getType: function() { return type; }
 			}
-			if(container)
-				container.push(edge);
 			return edge;
 		}
 
-		var task1 = makeTask("Take Hostages");
-		var task2 = makeTask("Break Into Vault");
-		var task3 = makeTask("Getaway");
+		var task1 = makeTask("Take Hostages", 1, 1);
+		var task2 = makeTask("Break Into Vault", 2, 1);
+		var task3 = makeTask("Getaway", 3, 1);
 
 		var start = {
-			edge : null,
 			getType: function(){return "start"},
-			getEdge: function () {return this.edge;}
+			getGridPos : function() { return {x: 0, y: 1}; }
 		}
 
 		var end = {
-			getType: function() {return "goal"}
+			getType: function() {return "goal"},
+			getGridPos : function() { return {x:4, y: 1}; }
+		}
+
+		var defeat = {
+			getType: function() {return "lose"; },
+			getGridPos: function() {return {x:2, y:2}; }
 		}
 
 		var edges = [];
-		start.edge = makeEdge(start, task1, edges);
-		task1.successEdge = makeEdge(task1, task2, edges);
-		task2.successEdge = makeEdge(task2, task3, edges);
-		task3.successEdge = makeEdge(task3, end, edges);
+		edges.push( makeEdge(start, task1, "normal" ) );
+		edges.push( makeEdge(task1, task2, "success") );
+		edges.push( makeEdge(task2, task3, "success") );
+		edges.push( makeEdge(task3, end,   "success") );
+
+		edges.push( makeEdge(task1, defeat, "fail") );
+		edges.push( makeEdge(task2, defeat, "fail") );
+		edges.push( makeEdge(task3, defeat, "fail") );
 
 		var job = {
 			getData : function(){ 
@@ -202,7 +244,7 @@ function JobView() {
 					penalties : [] 
 				};
 			},
-			getNodes : function(){return [start, task1, task2, task3, end]; },
+			getNodes : function(){return [start, task1, task2, task3, end, defeat]; },
 			getEdges : function(){return edges; }
 		}
 

@@ -40,42 +40,41 @@ function TaskNode(options) { //extends jobNode
 	//Public members 
 	//override to specify the correct edge for connection points
 	graphics.upperEdge = function(){ 
-		return {x: width /2, y: graphics.y};
+		return {x: graphics.x + width /2, y: graphics.y};
 	};
 	graphics.lowerEdge = function(){ 
-		return {x: width/2, y: height}; 
+		return {x: graphics.x + width/2, y: graphics.y + height}; 
 	};
 	graphics.leftEdge = function(){ 
-		return {x: graphics.x, y: height/2}; 
+		return {x: graphics.x, y: graphics.y + height/2}; 
 	};
 	graphics.rightEdge = function(){ 
-		return {x: width, y: height/2};
+		return {x: graphics.x + width, y: graphics.y + height/2};
 	};
 
 	//Sets the next node on the success path
-	graphics.setSuccessNode = function(node, direction) {
-		direction = direction || directions.right;
+	graphics.setSuccessNode = function(node) {
 		successEdge = {edge: new JobNodeEdge(state, taskNodeDefaults.successEdgeColor, taskNodeDefaults.completeEdgeColor),
 					   node: node};
-		return graphics.addConnectedNode(node, direction, successEdge.edge);
+		return graphics.connectNode(node, successEdge.edge);
 	}
 
 	//Sets the next node on the fail path
-	graphics.setFailNode = function(node, direction) {
-		direction = direction || directions.down;
+	graphics.setFailNode = function(node) {
+
 		failEdge = {edge: new JobNodeEdge(state, taskNodeDefaults.failEdgeColor, taskNodeDefaults.completeEdgeColor),
 					node: node};
-		return graphics.addConnectedNode(node, direction, failEdge.edge);
+		return graphics.connectNode(node, failEdge.edge);
 	}
 
 	//Sets the next node regardless of pass or fail. This removes and success or fail nodes already set
-	graphics.setNextNode = function(node, direction) {
-		direction = direction || directions.right;
+	graphics.setNextNode = function(node) {
+
 		universalNextEdge = {edge: new JobNodeEdge(state, taskNodeDefaults.borderColor, taskNodeDefaults.completeEdgeColor),
 					node: node};
 		successEdge = null;
 		failEdge = null;
-		return graphics.addConnectedNode(node, direction, failEdge.edge);
+		return graphics.connectNode(node, universalNextEdge.edge);
 	}
 
 	graphics.setCompletionState = function(taskNodeState) {
