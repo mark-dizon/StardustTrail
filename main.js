@@ -39,6 +39,7 @@ function preload(){
 
 function create() {
     //Setup the scaling configuration
+	starSystem = new StarSystem(state);
     game.scale.setShowAll();
     game.scale.refresh();
 

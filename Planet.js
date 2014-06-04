@@ -3,10 +3,11 @@ function Planet(game, x, y, image, name, starSystem) {
 	sprite.name = name;
 	sprite.starSystem = starSystem;
 	sprite.text = game.state.getCurrentState().add.text(
-		x + 20,y + 150,
+		x ,y + 100,
 		name, { font: "65px Arial", fill: "#ffffff", align: "center" }
 	);
 	sprite.text.visible = false;
+	sprite.anchor.setTo(0.5,0.5);
 	sprite.text.anchor.setTo(0.5, 0.5);
 	sprite.inputEnabled = true;
 	sprite.events.onInputOver.add(displayInfo, this);
@@ -21,14 +22,14 @@ function Planet(game, x, y, image, name, starSystem) {
 	}
 	function travel(){
 		game.state.getCurrentState().camera.focusOnXY(x, y);
-		var planet = sprite.starSystem.getCurrentPlanet();
+		var planet = sprite.starSystem.currentPlanet;
 		if(planet === sprite) {
 			//switch state
-			alert("Traveling to planet "+planet.name);
+			game.pushState('')
 		}
 		else {
 			planet.text.visible = false;
-			sprite.starSystem.setCurrentPlanet(sprite);
+			sprite.starSystem.currentPlanet = sprite;
 		}
 	}
 
