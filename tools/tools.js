@@ -17,6 +17,36 @@ $("#attributecheck-button").bind("click", function(){
 
 });
 
+$("#reward-button").bind("click", function(){
+	var amount = $("#reward-value").val();
+	var attribute = $("#reward-attribute").val();
+
+	var reward = {
+		name : attribute, 
+		value : amount 
+	}
+
+	$("#reward-result").val(JSON.stringify(reward));
+
+	return false;
+
+});
+
+$("#penalty-button").bind("click", function(){
+	var amount = $("#penalty-value").val();
+	var attribute = $("#penalty-attribute").val();
+
+	var penalty = {
+		name : attribute, 
+		value : amount 
+	}
+
+	$("#penalty-result").val(JSON.stringify(penalty));
+
+	return false;
+
+});
+
 $("#attributeCheckModifer-button").bind("click", function(){
 	var amount = $("#attributeCheckModifer-value").val();
 	var attribute = $("#attributeCheckModifer-stat").val();
@@ -62,6 +92,9 @@ $("#taskdata-button").bind("click", function(){
 	var penalty = $("#taskdata-penalty").val();
 	var atribute = $("#taskdata-attribute").val();
 	var check = $("#taskdata-checks").val();
+	var id = $("#taskdata-id").val();
+	var pass = $("#taskdata-pass").val();
+
 
 
 
@@ -71,6 +104,8 @@ $("#taskdata-button").bind("click", function(){
 		checks : [ check ], //One or more
 		rewards : [reward], //zero or more
 		penalties: [penalty], //zero or more
+		id : id,
+		pass : pass,
 		modifiers : [atribute] //zero or more. These are modifiers for connected tasks if this task is passed
 	};
 
