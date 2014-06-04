@@ -11,7 +11,7 @@ $("#attributecheck-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#attributecheck-result").val("var attributeCheck =" +JSON.stringify(AttributeCheck));
+	$("#attributecheck-result").val('{"attributeCheck":' +JSON.stringify(AttributeCheck)+"}");
 
 	return false;
 
@@ -26,7 +26,7 @@ $("#reward-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#reward-result").val("var reward ="+JSON.stringify(reward));
+	$("#reward-result").val('{"reward:"'+JSON.stringify(reward)+"}");
 
 	return false;
 
@@ -41,7 +41,7 @@ $("#penalty-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#penalty-result").val("var penalty = "+JSON.stringify(penalty));
+	$("#penalty-result").val('{"penalty:"'+JSON.stringify(penalty)+"}");
 
 	return false;
 
@@ -58,7 +58,7 @@ $("#attributeCheckModifer-button").bind("click", function(){
 		operator: modifier 
 	}
 
-	$("#attributeCheckModifer-result").val("var attributeCheckModifier = "+ JSON.stringify(AttributeCheckModifier));
+	$("#attributeCheckModifer-result").val('{"attributeCheckModifier:"'+ JSON.stringify(AttributeCheckModifier+"}"));
 
 	return false;
 
@@ -79,7 +79,7 @@ $("#jobdata-button").bind("click", function(){
 	};
 
 
-	$("#jobdata-result").val("var jobData = "+JSON.stringify(jobData));
+	$("#jobdata-result").val('{"jobData:"'+JSON.stringify(jobData)+"}");
 
 	return false;
 
@@ -110,7 +110,7 @@ $("#taskdata-button").bind("click", function(){
 	};
 
 
-	$("#taskdata-result").val("var taskData ="+JSON.stringify(taskData));
+	$("#taskdata-result").val('{"taskData:"'+JSON.stringify(taskData)+"}");
 
 	return false;
 
