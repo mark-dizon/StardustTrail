@@ -20,12 +20,17 @@ function JobView() {
 	state.update = update;
 	state.init = initJob;
 	state.handleInput = handleInput;
+	state.shutdown = shutdown;
 
 	var textDisplay;
 
 	function preload(){
 
+	    game.load.image('cowboy', 'assets/cowboy.jpg');
+	    game.load.image('unknownCharacter', 'assets/unknownCharacter.jpg');
+
 		game.load.audio("tempCompleteSound", "./sound/Blip_Select2.wav", true);
+		game.load.audio("characterAssign", "./sound/Hit_Hurt19.wav", true);
 
 	}
 
@@ -43,16 +48,18 @@ function JobView() {
 		//Create the text log
 		textDisplay = state.add.text(screenWidth * 0.01, screenHeight * 0.75,
 									"Press Spacebar to progress Job.\n" +
+									"Drag + Drop Characters to assign to Tasks.\n" +
 									"Press any other key to exit Job View", 
 									{ font: "16pt Tahoma", fill: "#FFFFFF"});
 
-
-		mockJobPlaythrough();
+		makeMockCharacters();
+		beginJob();
 	}
 
 
 	function initJob(job) {
 		currentJob = job;
+		CharacterDropTarget.all = []; //TODO: A way to not need to do this.
 	}
 	
 	function update(){
@@ -69,6 +76,9 @@ function JobView() {
 		else {
 			game.changeState(states.map);
 		}
+	}
+
+	function shutdown(){
 	}
 
 	function createJobGraph(job) {
@@ -142,18 +152,13 @@ function JobView() {
 	}
 
 	function beginJob() {
-		var startingPoint = globalStart; //TEMPORARY, need to base starting point on character assignment
-
-		startingPoint.setCompletionState(taskNodeStates.inprogress);
-
-	}
-
-	//Fake resolving the mockup job graph
-	function mockJobPlaythrough() {
 
 		//TODO: Logic for actually completing job
 		function completeTask(nodeData, character){
-			return Phaser.Math.randomSign() > 0; //just flip a coin
+			if(character) {
+				return (character.name && character.name === "Evan") ? false : true;
+			}
+			return false; //Phaser.Math.randomSign() > 0; //just flip a coin
 		}
 
 		function resolveNode(node, success, callback) {
@@ -166,7 +171,7 @@ function JobView() {
 		}
 
 		function resolveSuccess(node) {
-			var success = completeTask(node.data /*TODO, bound character*/);
+			var success = completeTask(node.data, node.characterData);
 			resolveNode(node, success, resolveSuccess);
 		}
 
@@ -176,6 +181,12 @@ function JobView() {
 			resolveSuccess(globalStart);
 		});
 
+	}
+
+	function makeMockCharacters() {
+		new CharacterDraggable({state: state, x: screenWidth/2 - 150, y: 50, character: {name : "Reza"}});
+		new CharacterDraggable({state: state, x: screenWidth/2 - 50 , y: 50, character: {name : "Evan"}});
+		new CharacterDraggable({state: state, x: screenWidth/2 + 50, y: 50, character: {name : "Mark"}});
 	}
 
 	function makeMockJob() {

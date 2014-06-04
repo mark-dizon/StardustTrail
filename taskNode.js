@@ -12,7 +12,9 @@ function TaskNode(options) { //extends jobNode
 		successEdgeColor: 0x02AF31 ,
 		completeEdgeColor : 0x004CAF,
 		inProgressEdgeColor: 0xFFFFFF,
-		edgeTraceAnimationSecs : 0.5
+		edgeTraceAnimationSecs : 0.5,
+		characterTargetOffset : 100, //px
+		characterTargetPadding : 10 
 	}
 
 	var successState = taskNodeStates.incomplete;
@@ -29,13 +31,47 @@ function TaskNode(options) { //extends jobNode
 
 	var name = options.name || "Unnamed Job";
 
-	var successEdge, failEdge, universalNextEdge;
+	var highlight = false;
 
+	var successEdge, failEdge, universalNextEdge;
 	
 	var graphics = new JobNode(options);
 
 	graphics.addChild(new Phaser.Text(game, 10, 10, name, 
 						{ font: "16pt Courier", fill: "#FCAE1C", stroke: "#FCAE1C", strokeThickness: 1 }));
+
+	var characterAssignSound = game.add.audio("characterAssign");
+
+	graphics.characterData = null;
+
+	//Drop target for assigning characters
+	var dropTarget = new CharacterDropTarget({
+		x: x,
+		y: y,
+		draggableAnchorX : x,
+		draggableAnchorY: y + height - characterIconDimensions.height - taskNodeDefaults.characterTargetPadding * 2,
+		width: width,
+		height : height,
+		padding: taskNodeDefaults.characterTargetPadding,
+		onDrop : function(characterDraggable){
+			characterAssignSound.play();
+			graphics.characterData = characterDraggable.getCharacter();
+		},
+		onLift: function() {
+			graphics.characterData = null;
+		},
+		onDragOver : function(){
+			highlight = true;
+			draw();
+		},
+		onDragOut : function(){
+			highlight = false;
+			draw();
+		}
+	});
+	graphics.addChild(new Phaser.Sprite(game, 
+					dropTarget.draggableAnchor.x - x + taskNodeDefaults.characterTargetPadding, 
+					dropTarget.draggableAnchor.y - y + taskNodeDefaults.characterTargetPadding, 'unknownCharacter'));
 
 	//Public members 
 	//override to specify the correct edge for connection points
@@ -107,6 +143,8 @@ function TaskNode(options) { //extends jobNode
 		//Draw the outline
 		var outlineColor = borderColor;
 		var outlineWidth = borderWidth;
+		if(highlight)
+			outlineWidth += 2;
 		switch(successState) {
 			case taskNodeStates.success : 
 			case taskNodeStates.failure : 
