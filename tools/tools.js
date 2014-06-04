@@ -11,7 +11,7 @@ $("#attributecheck-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#attributecheck-result").val(JSON.stringify(AttributeCheck));
+	$("#attributecheck-result").val("var attributeCheck =" +JSON.stringify(AttributeCheck));
 
 	return false;
 
@@ -26,7 +26,7 @@ $("#reward-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#reward-result").val(JSON.stringify(reward));
+	$("#reward-result").val("var reward ="+JSON.stringify(reward));
 
 	return false;
 
@@ -41,7 +41,7 @@ $("#penalty-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#penalty-result").val(JSON.stringify(penalty));
+	$("#penalty-result").val("var penalty = "+JSON.stringify(penalty));
 
 	return false;
 
@@ -58,7 +58,7 @@ $("#attributeCheckModifer-button").bind("click", function(){
 		operator: modifier 
 	}
 
-	$("#attributeCheckModifer-result").val(JSON.stringify(AttributeCheckModifier));
+	$("#attributeCheckModifer-result").val("var attributeCheckModifier = "+ JSON.stringify(AttributeCheckModifier));
 
 	return false;
 
@@ -74,12 +74,12 @@ $("#jobdata-button").bind("click", function(){
 	var jobData = {
 		name : name,
 		desc: description,
-		rewards : reward, //zero or more. Reward for whole job
-		penalties : penalty //zero or more. Penalty for failing whole job.
+		rewards : [reward], //zero or more. Reward for whole job
+		penalties : [penalty] //zero or more. Penalty for failing whole job.
 	};
 
 
-	$("#jobdata-result").val(JSON.stringify(jobData));
+	$("#jobdata-result").val("var jobData = "+JSON.stringify(jobData));
 
 	return false;
 
@@ -110,7 +110,7 @@ $("#taskdata-button").bind("click", function(){
 	};
 
 
-	$("#taskdata-result").val(JSON.stringify(taskData));
+	$("#taskdata-result").val("var taskData ="+JSON.stringify(taskData));
 
 	return false;
 

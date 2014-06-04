@@ -31,6 +31,11 @@ jobGraphDimensions = {
 	columns: 3
 }
 
+characterIconDimensions = {
+	width: 84,
+	height : 84
+}
+
 screenWidth = 1920;
 screenHeight = 1080;
 
