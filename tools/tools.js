@@ -67,8 +67,8 @@ $("#attributeCheckModifer-button").bind("click", function(){
 $("#jobdata-button").bind("click", function(){
 	var name = $("#jobdata-name").val();
 	var description = $("#jobdata-desc").val();
-	var reward = $("#jobdata-reward").val();
-	var penalty = $("#jobdata-penalty").val();
+	var reward = JSON.parse($("#jobdata-reward").val());
+	var penalty = JSON.parse($("#jobdata-penalty").val());
 	
 
 	var jobData = {
