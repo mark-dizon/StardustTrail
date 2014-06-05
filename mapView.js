@@ -3,7 +3,6 @@ function MapView() {
 	var graphics;
 	var state = new Phaser.State();
 	var cursors;
-	var planetText;
 	state.preload = preload;
 	state.create = create;
 	state.update = update;
@@ -15,16 +14,10 @@ function MapView() {
 	}
 
 	function create(){
+		state.planetGroup = state.add.group();
 		state.world.setBounds(-1000,-1000,3000,3000);
-		state.camera.x = 0;
-		state.camera.y = 0;
-		state.camera.bounds = new Phaser.Rectangle(0, 0, 1000, 1000);
+		state.camera.focusOnXY(starSystem.cameraX, starSystem.cameraY);
 
-		graphics = state.add.graphics(0,0);
-		starSystem.drawMap(graphics);
-		starSystem.planets.forEach(function(planet) {
-			state.add.existing(planet);
-		});
 		cursors = state.input.keyboard.createCursorKeys();
 
 		//Create bitmap data
@@ -32,13 +25,50 @@ function MapView() {
 		state.bitmap.context.fillStyle = 'rgb(255, 255, 255)';
 		state.bitmap.context.strokeStyle = 'rgb(255, 255, 255)';
 		state.add.image(0, 0, state.bitmap);
+		createMap();
 		drawHud();
 	}
 
+	function createMap(){
+		graphics = state.add.graphics(0,0);
+		starSystem.planets.forEach(function(planet){
+			var planetSprite = new Phaser.Sprite(game, planet.x, planet.y, planet.image);
+			state.planetGroup.add(planetSprite);
+			planetSprite.anchor.setTo(0.5, 0.5);
+			planetSprite.inputEnabled = true;
+			planetSprite.events.onInputOver.add(function(){
+				var planet = starSystem.planets[planetSprite.z - 1];
+				var distance = starSystem.edges[starSystem.currentPlanet.index][planetSprite.z - 1];
+				state.hoverText.visible = true;
+				state.hoverText.setText(planet.name + ' ' + distance + 'mkm away');
+			});
+			planetSprite.events.onInputOut.add(function(){
+				state.hoverText.visible = false;
+			});
+			planetSprite.events.onInputDown.add(function(){
+				starSystem.currentPlanet = starSystem.planets[planetSprite.z - 1];
+				state.planetText.setText('Current Planet: '+starSystem.currentPlanet.name);
+				state.camera.focusOnXY(planet.x, planet.y);
+				state.hoverText.visible = false;
+				starSystem.cameraX = planet.x;
+				starSystem.cameraY = planet.y;
+			});
+		});
+		graphics.beginFill(0xFFFFFF);
+		for(var i = 0; i < 500; i++) {
+			graphics.drawCircle(state.world.randomX, state.world.randomY, 1);
+		}
+	}
+
 	function drawHud(){
-		planetText = state.add.text(20, 150,
-			starSystem.currentPlanet.name , { font: "65px Arial", fill: "#ffffff", align: "center" });
-		planetText.fixedToCamera = true;
+		state.hoverText = state.add.text(state.camera.width/2, state.camera.height - 100,  "", { font: "65px Arial", fill: "#ffffff", align: "center" });
+		state.hoverText.anchor.setTo(0.5,0.5);
+		state.hoverText.visible = false;
+		state.hoverText.fixedToCamera = true;
+		state.planetText = state.add.text(state.camera.width/2, 100,
+			'Current Planet: '+starSystem.currentPlanet.name , { font: "65px Arial", fill: "#ffffff", align: "center" });
+		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText.fixedToCamera = true;
 	}
 
 	function update(){
@@ -76,6 +106,7 @@ function MapView() {
 	function handleInput(event) {
 		switch (event.keyCode) {
 	        case Phaser.Keyboard.A:
+				console.log(state.camera.x, state.camera.y);
 	        	game.pushState(states.event);
 	            break;
 	        case Phaser.Keyboard.M:

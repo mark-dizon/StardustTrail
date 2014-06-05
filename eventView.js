@@ -13,6 +13,10 @@ function EventView() {
 	function create(){
 		graphics = state.add.graphics(0,0);
 		drawSomething();
+		console.log(state.camera.x, state.camera.y);
+		state.world.setBounds(-1000,-1000,3000,3000);
+		state.camera.focusOnXY(starSystem.cameraX, starSystem.cameraY);
+
 	}
 
 	function update(){
