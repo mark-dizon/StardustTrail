@@ -38,7 +38,7 @@ function MapView() {
 			planetSprite.inputEnabled = true;
 			planetSprite.events.onInputOver.add(function(){
 				var planet = starSystem.planets[planetSprite.z - 1];
-				var distance = starSystem.edges[starSystem.currentPlanet.index][planetSprite.z - 1];
+				var distance = starSystem.getDistance(planetSprite.z - 1);
 				state.hoverText.visible = true;
 				state.hoverText.setText(planet.name + ' ' + distance + 'mkm away');
 			});
@@ -61,14 +61,24 @@ function MapView() {
 	}
 
 	function drawHud(){
+		//Information about clickable objects displayed here
 		state.hoverText = state.add.text(state.camera.width/2, state.camera.height - 100,  "", { font: "65px Arial", fill: "#ffffff", align: "center" });
 		state.hoverText.anchor.setTo(0.5,0.5);
 		state.hoverText.visible = false;
 		state.hoverText.fixedToCamera = true;
+		//Displays current planet
 		state.planetText = state.add.text(state.camera.width/2, 100,
 			'Current Planet: '+starSystem.currentPlanet.name , { font: "65px Arial", fill: "#ffffff", align: "center" });
 		state.planetText.anchor.setTo(0.5, 0.5);
 		state.planetText.fixedToCamera = true;
+		//Ship information
+		state.shipText = state.add.text(state.camera.width - 50, state.camera.height/2,
+			'Ship\nFuel:'+starSystem.ship.fuel+
+				'\nCargo:'+starSystem.ship.calculateFreeCargo()+'/'+starSystem.ship.maxCargo+
+				'\nMoney:'+starSystem.ship.money
+			, { font: "35px Arial", fill: "#ffffff", align: "right" });
+		state.shipText.anchor.setTo(1, 0);
+		state.shipText.fixedToCamera = true;
 	}
 
 	function update(){

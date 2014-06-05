@@ -13,4 +13,8 @@ function Ship() {
 	this.money = 25000;
 	this.items = [];
 	this.crew = [];
+
+	this.calculateFreeCargo = function(){
+		return this.maxCargo - (this.fuel + this.parts + this.supplies + this.passengers);
+	}
 }
