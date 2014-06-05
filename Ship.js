@@ -17,4 +17,10 @@ function Ship() {
 	this.calculateFreeCargo = function(){
 		return this.maxCargo - (this.fuel + this.parts + this.supplies + this.passengers);
 	}
+
+	this.displayStats = function() {
+		return 'Ship\nFuel:'+this.fuel+
+			'\nCargo:'+this.calculateFreeCargo()+'/'+this.maxCargo+
+			'\nMoney:'+this.money
+	}
 }

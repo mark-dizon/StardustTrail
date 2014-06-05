@@ -73,9 +73,7 @@ function MapView() {
 		state.planetText.fixedToCamera = true;
 		//Ship information
 		state.shipText = state.add.text(state.camera.width - 50, state.camera.height/2,
-			'Ship\nFuel:'+starSystem.ship.fuel+
-				'\nCargo:'+starSystem.ship.calculateFreeCargo()+'/'+starSystem.ship.maxCargo+
-				'\nMoney:'+starSystem.ship.money
+			starSystem.ship.displayStats()
 			, { font: "35px Arial", fill: "#ffffff", align: "right" });
 		state.shipText.anchor.setTo(1, 0);
 		state.shipText.fixedToCamera = true;
