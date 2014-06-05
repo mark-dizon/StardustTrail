@@ -1,0 +1,70 @@
+{
+    "jobData": {
+        "name": "",
+        "desc": "",
+        "rewards": [
+            {
+                "reward": {
+                    "name": "money",
+                    "value": "1"
+                }
+            }
+        ],
+        "penalties": [
+            {
+                "penalty": {
+                    "name": "money",
+                    "value": "1"
+                }
+            }
+        ],
+        "tasks": [
+            {
+                "taskData": {
+                    "name": "asdasdasd",
+                    "desc": "asdasdasd",
+                    "checks": [
+                        {
+                            "attributeCheck": {
+                                "name": "smarts",
+                                "value": "1"
+                            }
+                        }
+                    ],
+                    "rewards": [
+                        {
+                            "reward": {
+                                "name": "money",
+                                "value": "1"
+                            }
+                        }
+                    ],
+                    "penalties": [
+                        {
+                            "penalty": {
+                                "name": "money",
+                                "value": "1"
+                            }
+                        }
+                    ],
+                    "id": "1",
+                    "pass": "2",
+                    "fail": "3",
+                    "modifiers": [
+                        {
+                            "attributeCheckModifier": {
+                                "name": "smarts",
+                                "value": "1",
+                                "operator": "add"
+                            }
+                        }
+                    ],
+                    "position": {
+                        "X": "1",
+                        "Y": "1"
+                    }
+                }
+            }
+        ]
+    }
+}

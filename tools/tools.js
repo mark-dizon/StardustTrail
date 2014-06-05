@@ -69,13 +69,15 @@ $("#jobdata-button").bind("click", function(){
 	var description = $("#jobdata-desc").val();
 	var reward = JSON.parse($("#jobdata-reward").val());
 	var penalty = JSON.parse($("#jobdata-penalty").val());
+	var taskdata = JSON.parse($("#jobdata-tasks").val());
 	
 
 	var jobData = {
 		name : name,
 		desc: description,
 		rewards : [reward], //zero or more. Reward for whole job
-		penalties : [penalty] //zero or more. Penalty for failing whole job.
+		penalties : [penalty], //zero or more. Penalty for failing whole job.
+		tasks : [taskdata]
 	};
 
 
@@ -94,6 +96,7 @@ $("#taskdata-button").bind("click", function(){
 	var check = JSON.parse($("#taskdata-check").val());
 	var id = $("#taskdata-id").val();
 	var pass = $("#taskdata-pass").val();
+	var fail = $("#taskdata-fail").val();
 	var positionX =$("#taskdata-positionX").val();
 	var positionY = $("#taskdata-positionY").val();
 
@@ -108,6 +111,7 @@ $("#taskdata-button").bind("click", function(){
 		penalties: [penalty], //zero or more
 		id : id,
 		pass : pass,
+		fail: fail,
 		modifiers : [atribute], //zero or more. These are modifiers for connected tasks if this task is passed
 		position : {X: positionX, Y: positionY}
 	};
