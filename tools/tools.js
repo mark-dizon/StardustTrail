@@ -11,7 +11,7 @@ $("#attributecheck-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#attributecheck-result").val("var attributeCheck =" +JSON.stringify(AttributeCheck));
+	$("#attributecheck-result").val('{"attributeCheck":' +JSON.stringify(AttributeCheck)+"}");
 
 	return false;
 
@@ -26,7 +26,7 @@ $("#reward-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#reward-result").val("var reward ="+JSON.stringify(reward));
+	$("#reward-result").val('{"reward":'+JSON.stringify(reward)+"}");
 
 	return false;
 
@@ -41,7 +41,7 @@ $("#penalty-button").bind("click", function(){
 		value : amount 
 	}
 
-	$("#penalty-result").val("var penalty = "+JSON.stringify(penalty));
+	$("#penalty-result").val('{"penalty":'+JSON.stringify(penalty)+"}");
 
 	return false;
 
@@ -58,7 +58,7 @@ $("#attributeCheckModifer-button").bind("click", function(){
 		operator: modifier 
 	}
 
-	$("#attributeCheckModifer-result").val("var attributeCheckModifier = "+ JSON.stringify(AttributeCheckModifier));
+	$("#attributeCheckModifer-result").val('{"attributeCheckModifier":'+ JSON.stringify(AttributeCheckModifier)+"}");
 
 	return false;
 
@@ -67,8 +67,8 @@ $("#attributeCheckModifer-button").bind("click", function(){
 $("#jobdata-button").bind("click", function(){
 	var name = $("#jobdata-name").val();
 	var description = $("#jobdata-desc").val();
-	var reward = $("#jobdata-reward").val();
-	var penalty = $("#jobdata-penalty").val();
+	var reward = JSON.parse($("#jobdata-reward").val());
+	var penalty = JSON.parse($("#jobdata-penalty").val());
 	
 
 	var jobData = {
@@ -79,7 +79,7 @@ $("#jobdata-button").bind("click", function(){
 	};
 
 
-	$("#jobdata-result").val("var jobData = "+JSON.stringify(jobData));
+	$("#jobdata-result").val('{"jobData":'+JSON.stringify(jobData)+"}");
 
 	return false;
 
@@ -88,12 +88,14 @@ $("#jobdata-button").bind("click", function(){
 $("#taskdata-button").bind("click", function(){
 	var name = $("#taskdata-name").val();
 	var description = $("#taskdata-desc").val();
-	var reward = $("#taskdata-reward").val();
-	var penalty = $("#taskdata-penalty").val();
-	var atribute = $("#taskdata-attribute").val();
-	var check = $("#taskdata-checks").val();
+	var reward = JSON.parse($("#taskdata-reward").val());
+	var penalty = JSON.parse($("#taskdata-penalty").val());
+	var atribute = JSON.parse($("#taskdata-attribute").val());
+	var check = JSON.parse($("#taskdata-check").val());
 	var id = $("#taskdata-id").val();
 	var pass = $("#taskdata-pass").val();
+	var positionX =$("#taskdata-positionX").val();
+	var positionY = $("#taskdata-positionY").val();
 
 
 
@@ -106,24 +108,17 @@ $("#taskdata-button").bind("click", function(){
 		penalties: [penalty], //zero or more
 		id : id,
 		pass : pass,
-		modifiers : [atribute] //zero or more. These are modifiers for connected tasks if this task is passed
+		modifiers : [atribute], //zero or more. These are modifiers for connected tasks if this task is passed
+		position : {X: positionX, Y: positionY}
 	};
 
 
-	$("#taskdata-result").val("var taskData ="+JSON.stringify(taskData));
+
+	$("#taskdata-result").val('{"taskData":'+JSON.stringify(taskData)+"}");
 
 	return false;
 
 });
-
-
-
-
-
-
-
-
-
 
 
 });
