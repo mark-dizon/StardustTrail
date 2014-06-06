@@ -40,6 +40,7 @@ function preload(){
 function create() {
     //Setup the scaling configuration
 	starSystem = new StarSystem();
+	ship = new Ship();
     game.scale.setShowAll();
     game.scale.refresh();
 

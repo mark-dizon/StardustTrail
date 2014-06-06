@@ -14,10 +14,19 @@ function StarSystem() {
 	this.currentPlanet = this.planets[0];
 	this.cameraX = 0;
 	this.cameraY = 0;
-	this.ship = new Ship();
 
 	//distance from current planet to another planet
-	this.getDistance = function(planetIndex) {
-		return this.edges[this.currentPlanet.index][planetIndex];
+	this.getDistance = function(planet) {
+		return this.edges[this.currentPlanet.index][planet.index];
+	}
+
+	this.canTravel = function(planet) {
+		return this.getDistance(planet) <= ship.fuel;
+	}
+
+	this.travel = function(planet) {
+		ship.fuel = ship.fuel - this.getDistance(planet);
+		this.currentPlanet = planet;
+		console.log('Fuel = ' + ship.fuel + ' Distance = ' + this.getDistance(planet));
 	}
 }

@@ -38,7 +38,7 @@ function MapView() {
 			planetSprite.inputEnabled = true;
 			planetSprite.events.onInputOver.add(function(){
 				var planet = starSystem.planets[planetSprite.z - 1];
-				var distance = starSystem.getDistance(planetSprite.z - 1);
+				var distance = starSystem.getDistance(planet);
 				state.hoverText.visible = true;
 				state.hoverText.setText(planet.name + ' ' + distance + 'mkm away');
 			});
@@ -46,18 +46,30 @@ function MapView() {
 				state.hoverText.visible = false;
 			});
 			planetSprite.events.onInputDown.add(function(){
-				starSystem.currentPlanet = starSystem.planets[planetSprite.z - 1];
-				state.planetText.setText('Current Planet: '+starSystem.currentPlanet.name);
-				state.camera.focusOnXY(planet.x, planet.y);
-				state.hoverText.visible = false;
-				starSystem.cameraX = planet.x;
-				starSystem.cameraY = planet.y;
+				var planet = starSystem.planets[planetSprite.z - 1];
+				console.log('Planet = ' + planet.name);
+				if(starSystem.canTravel(planet)){
+					starSystem.travel(planet);
+					starSystem.cameraX = planet.x;
+					starSystem.cameraY = planet.y;
+					state.hoverText.visible = false;
+					updateHud();
+				}
+				else {
+					state.hoverText.setText('Too far!');
+				}
 			});
 		});
 		graphics.beginFill(0xFFFFFF);
 		for(var i = 0; i < 500; i++) {
 			graphics.drawCircle(state.world.randomX, state.world.randomY, 1);
 		}
+	}
+
+	function updateHud(){
+		state.planetText.setText('Current Planet: '+starSystem.currentPlanet.name);
+		state.shipText.setText(ship.displayStats());
+		state.camera.focusOnXY(starSystem.cameraX, starSystem.cameraY);
 	}
 
 	function drawHud(){
@@ -73,7 +85,7 @@ function MapView() {
 		state.planetText.fixedToCamera = true;
 		//Ship information
 		state.shipText = state.add.text(state.camera.width - 50, state.camera.height/2,
-			starSystem.ship.displayStats()
+			ship.displayStats()
 			, { font: "35px Arial", fill: "#ffffff", align: "right" });
 		state.shipText.anchor.setTo(1, 0);
 		state.shipText.fixedToCamera = true;
