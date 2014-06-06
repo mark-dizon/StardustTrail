@@ -23,25 +23,42 @@ function PlanetView() {
 
 	function drawMenu(){
 		// Status line
-		state.hoverText = state.add.text(state.camera.width/2, state.camera.height - 100,  "", { font: "65px Arial", fill: "#ffffff", align: "center" });
+		state.hoverText = state.add.text(state.camera.width/2, state.camera.height - 100,
+			"", { font: "65px Arial", fill: "#ffffff", align: "center"}
+		);
 		state.hoverText.anchor.setTo(0.5,0.5);
 		state.hoverText.visible = false;
 		state.hoverText.fixedToCamera = true;
 
 		// Deal - Buy stuff
-		state.planetText = state.add.text(50, state.camera.height/2 - 100,
+		state.planetText = state.add.text(20, state.camera.height/2 - 100,
 			'Deal', { font: "65px Arial", fill: "#ffffff", align: "left" });
+		state.planetText.inputEnabled = true;
 		state.planetText.fixedToCamera = true;
+		state.planetText.events.onInputOver.add(function(){
+			state.hoverText.visible = true;
+			state.hoverText.setText('Buy Goods');
+		});
 
 		// Meet - Get tasks
-		state.planetText = state.add.text(50, state.camera.height/2,
+		state.planetText = state.add.text(20, state.camera.height/2,
 			'Meet', { font: "65px Arial", fill: "#ffffff", align: "left" });
 		state.planetText.fixedToCamera = true;
+		state.planetText.inputEnabled = true;
+		state.planetText.events.onInputOver.add(function(){
+			state.hoverText.visible = true;
+			state.hoverText.setText('Meet with your contact');
+		});
 
 		// Misbehave - Start a Job
-		state.planetText = state.add.text(50, state.camera.height/2 + 100,
+		state.planetText = state.add.text(20, state.camera.height/2 + 100,
 			'Misbehave', { font: "65px Arial", fill: "#ffffff", align: "left" });
 		state.planetText.fixedToCamera = true;
+		state.planetText.inputEnabled = true;
+		state.planetText.events.onInputOver.add(function(){
+			state.hoverText.visible = true;
+			state.hoverText.setText('Complete a Job');
+		});
 
 	}
 

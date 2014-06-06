@@ -21,11 +21,6 @@ function MapView() {
 
 		cursors = state.input.keyboard.createCursorKeys();
 
-		//Create bitmap data
-		state.bitmap = state.add.bitmapData(state.world.width,state.world.height);
-		state.bitmap.context.fillStyle = 'rgb(255, 255, 255)';
-		state.bitmap.context.strokeStyle = 'rgb(255, 255, 255)';
-		state.add.image(0, 0, state.bitmap);
 		createMap();
 		drawHud();
 	}
