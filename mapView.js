@@ -8,6 +8,7 @@ function MapView() {
 	state.update = update;
 	state.handleInput = handleInput;
 	state.render = render;
+	state.shutdown = shutdown;
 
 	function preload(){
 
@@ -49,11 +50,16 @@ function MapView() {
 				var planet = starSystem.planets[planetSprite.z - 1];
 				console.log('Planet = ' + planet.name);
 				if(starSystem.canTravel(planet)){
-					starSystem.travel(planet);
-					starSystem.cameraX = planet.x;
-					starSystem.cameraY = planet.y;
-					state.hoverText.visible = false;
-					updateHud();
+					if(planet === starSystem.currentPlanet) {
+						starSystem.land();
+					}
+					else {
+						starSystem.travel(planet);
+						starSystem.cameraX = planet.x;
+						starSystem.cameraY = planet.y;
+						state.hoverText.visible = false;
+						updateHud();
+					}
 				}
 				else {
 					state.hoverText.setText('Too far!');
@@ -126,7 +132,6 @@ function MapView() {
 	function handleInput(event) {
 		switch (event.keyCode) {
 	        case Phaser.Keyboard.A:
-				console.log(state.camera.x, state.camera.y);
 	        	game.pushState(states.event);
 	            break;
 	        case Phaser.Keyboard.M:
@@ -143,6 +148,10 @@ function MapView() {
 	}
 
 	function render() {
+	}
+
+	function shutdown() {
+		state.planetGroup.setAll('inputEnabled', false);
 	}
 
 	return state;

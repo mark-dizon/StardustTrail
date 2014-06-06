@@ -27,6 +27,9 @@ function StarSystem() {
 	this.travel = function(planet) {
 		ship.fuel = ship.fuel - this.getDistance(planet);
 		this.currentPlanet = planet;
-		console.log('Fuel = ' + ship.fuel + ' Distance = ' + this.getDistance(planet));
+	}
+
+	this.land = function() {
+		game.pushState(states.planet, true);
 	}
 }

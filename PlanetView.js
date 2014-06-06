@@ -22,14 +22,30 @@ function PlanetView() {
 	}
 
 	function drawMenu(){
+		// Status line
 		state.hoverText = state.add.text(state.camera.width/2, state.camera.height - 100,  "", { font: "65px Arial", fill: "#ffffff", align: "center" });
 		state.hoverText.anchor.setTo(0.5,0.5);
 		state.hoverText.visible = false;
 		state.hoverText.fixedToCamera = true;
-		state.planetText = state.add.text(state.camera.width/2, 100,
-			starSystem.currentPlanet.name , { font: "65px Arial", fill: "#ffffff", align: "center" });
+
+		// Deal - Buy stuff
+		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2 - 100,
+			'Deal', { font: "65px Arial", fill: "#ffffff", align: "center" });
 		state.planetText.anchor.setTo(0.5, 0.5);
 		state.planetText.fixedToCamera = true;
+
+		// Meet - Get tasks
+		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2,
+			'Meet', { font: "65px Arial", fill: "#ffffff", align: "center" });
+		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText.fixedToCamera = true;
+
+		// Misbehave - Start a Job
+		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2 + 100,
+			'Misbehave', { font: "65px Arial", fill: "#ffffff", align: "center" });
+		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText.fixedToCamera = true;
+
 	}
 
 	function update(){
