@@ -12,8 +12,8 @@ function StarSystem() {
 		[8,7,6,0]
 	];
 	this.currentPlanet = this.planets[0];
-	this.cameraX = 0;
-	this.cameraY = 0;
+	this.cameraX = this.currentPlanet.x;
+	this.cameraY = this.currentPlanet.y;
 
 	//distance from current planet to another planet
 	this.getDistance = function(planet) {

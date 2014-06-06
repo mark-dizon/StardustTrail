@@ -147,6 +147,7 @@ function MapView() {
 
 	function shutdown() {
 		state.planetGroup.setAll('inputEnabled', false);
+		state.hoverText.visible = false;
 	}
 
 	return state;
