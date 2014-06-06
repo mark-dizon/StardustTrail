@@ -29,21 +29,18 @@ function PlanetView() {
 		state.hoverText.fixedToCamera = true;
 
 		// Deal - Buy stuff
-		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2 - 100,
-			'Deal', { font: "65px Arial", fill: "#ffffff", align: "center" });
-		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText = state.add.text(50, state.camera.height/2 - 100,
+			'Deal', { font: "65px Arial", fill: "#ffffff", align: "left" });
 		state.planetText.fixedToCamera = true;
 
 		// Meet - Get tasks
-		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2,
-			'Meet', { font: "65px Arial", fill: "#ffffff", align: "center" });
-		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText = state.add.text(50, state.camera.height/2,
+			'Meet', { font: "65px Arial", fill: "#ffffff", align: "left" });
 		state.planetText.fixedToCamera = true;
 
 		// Misbehave - Start a Job
-		state.planetText = state.add.text(state.camera.width/2, state.camera.height/2 + 100,
-			'Misbehave', { font: "65px Arial", fill: "#ffffff", align: "center" });
-		state.planetText.anchor.setTo(0.5, 0.5);
+		state.planetText = state.add.text(50, state.camera.height/2 + 100,
+			'Misbehave', { font: "65px Arial", fill: "#ffffff", align: "left" });
 		state.planetText.fixedToCamera = true;
 
 	}
@@ -53,6 +50,7 @@ function PlanetView() {
 	}
 
 	function handleInput(event)	{
+		game.popState();
 	}
 
 	return state;
