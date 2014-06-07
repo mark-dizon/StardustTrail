@@ -12,7 +12,7 @@ function TypewriterText(options) {
 	var targetText = options.text || "";
 	var duration = options.duration || 20;
 	var index = 0;
-	var typeSound = game.add.audio('typeText');
+	var typeSound = game.add.audio('typeText', 0.1 /*Volume*/); 
 	var timer;
 
 	self.setText = setText;
@@ -33,6 +33,7 @@ function TypewriterText(options) {
 	}
 
 	function type(text, msecsPerLetter){
+		stop();
 		setText(text);
 		var msecsPerLetter = msecsPerLetter || duration;
 		play(msecsPerLetter);
@@ -58,11 +59,16 @@ function TypewriterText(options) {
 	}
 
 	function setOnlyTimeout(timedFunc, delay){
+		stop();
+		setTimeout(timedFunc, delay);
+	}
+
+	function stop() {
 		if(timer) {
 			clearTimeout(timer);
 			timer = null;
 		}
-		setTimeout(timedFunc, delay);
+
 	}
 }
 
