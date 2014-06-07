@@ -39,6 +39,7 @@ characterIconDimensions = {
 screenWidth = 1920;
 screenHeight = 1080;
 
+defaultFont = { font: "16pt Tahoma", fill: "#FFFFFF"};
 
 StatNames = ['smarts', 'swagger', 'moxy', 'muscle'];
 

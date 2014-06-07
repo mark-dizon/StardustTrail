@@ -35,6 +35,8 @@ window.onload = function() {
 function preload(){
 	//Load assets
 	game.load.image('planet', 'planet.png');
+
+    game.load.audio("typeText", "./sound/Blip_Text.wav", true);
 }
 
 function create() {

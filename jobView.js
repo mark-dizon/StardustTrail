@@ -37,20 +37,18 @@ function JobView() {
 	function create(){
 		tempCompleteSound = game.add.audio("tempCompleteSound");
 
-		//Mockup job graph
-		/*node = new TaskNode( {x: screenWidth/4, y:screenHeight/2 - 250, state: state} );
-		node.setSuccessNode(new TaskNode({state: state}))
-			.setSuccessNode(new TaskNode({state: state}))
-			.setFailNode(new TaskNode({state: state}));*/
-
 		createJobGraph(makeMockJob());
 
-		//Create the text log
-		textDisplay = state.add.text(screenWidth * 0.01, screenHeight * 0.75,
-									"Press Spacebar to progress Job.\n" +
-									"Drag + Drop Characters to assign to Tasks.\n" +
-									"Press any other key to exit Job View", 
-									{ font: "16pt Tahoma", fill: "#FFFFFF"});
+		//Create the text log 
+		textDisplay = new TypewriterText({
+			x: screenWidth * 0.01, y: screenHeight * 0.75,
+			text: "Press Spacebar to progress Job.\n " +
+				  "Drag + Drop Characters to assign to Tasks.\n " +
+				  "Press any other key to exit Job View."
+		});
+
+		state.add.existing(textDisplay);
+		textDisplay.play();
 
 		makeMockCharacters();
 		beginJob();
@@ -162,7 +160,8 @@ function JobView() {
 		}
 
 		function resolveNode(node, success, callback) {
-			tempCompleteSound.play();
+			//tempCompleteSound.play();
+			textDisplay.type("Task Completed");
 			node.setCompletionState( (success) ? taskNodeStates.success : taskNodeStates.failure );
 			node.next(success, function(nextNode){
 				nextNode.setCompletionState(taskNodeStates.inprogress);
